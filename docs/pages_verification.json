@@ -1,0 +1,15 @@
+{
+  "verifiedAt": "2026-10-29T14:26:34.634857+08:00",
+  "url": "https://akasiarainsto.github.io/annota-studio/",
+  "repository": "https://github.com/Akasiarainsto/annota-studio",
+  "validatedAppCommit": "4a033e3f53b102c292a50b8ddfb16c4c737224e3",
+  "deploymentRunUrl": "https://github.com/Akasiarainsto/annota-studio/actions/runs/40828934302",
+  "pagesStatus": "built",
+  "httpsEnforced": true,
+  "runtimeFilesMatched": 21,
+  "mediaRangesPassed": 3,
+  "jsonInteractionGroupsPassed": 12,
+  "workflowGroupsPassed": 14,
+  "offlineCompatibilityGroupsWithinWorkflow": 1,
+  "errors": []
+}

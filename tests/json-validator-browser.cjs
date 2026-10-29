@@ -4,6 +4,8 @@ const path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require('C:/Users/29346/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const ROOT=path.resolve(__dirname,'..');const checks=[];const errors=[];
+const BASE_URL=process.env.ANNOTA_BASE_URL||pathToFileURL(path.join(ROOT,'打开演示.html')).href;
+const REPORT_NAME=process.env.ANNOTA_BASE_URL?'pages_json_verification.json':'json_validator_verification.json';
 async function check(name,operation){await operation();checks.push(name);process.stdout.write(`PASS ${name}\n`);}
 async function runCheck(page){await page.locator('[data-json-action="run"]').click();}
 async function chooseCase(page,key){await page.locator('#json-case-select').selectOption(key);await runCheck(page);}
@@ -11,7 +13,7 @@ async function download(page,action){const pending=page.waitForEvent('download')
 async function run(){
  const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
  const page=await browser.newPage({viewport:{width:1500,height:1050},acceptDownloads:true});page.on('pageerror',e=>errors.push(e.message));
- await page.goto(pathToFileURL(path.join(ROOT,'打开演示.html')).href,{waitUntil:'load'});await page.waitForFunction(()=>document.querySelector('audio')?.readyState>=2);
+ await page.goto(BASE_URL,{waitUntil:'load'});await page.waitForFunction(()=>document.querySelector('audio')?.readyState>=2);
  await page.locator('.heading_actions [data-action="save"]').click();const before=await page.evaluate(()=>localStorage.getItem('annota_studio_v1'));
  await check('validator follows the active audio task and displays the Dolphin training schema',async()=>{
   await page.locator('.app_rail [data-action="json-validate"]').click();await page.waitForFunction(()=>document.querySelector('#json-summary').textContent.includes('音频规则通过'));
@@ -70,6 +72,6 @@ async function run(){
  await check('video time order is checked immediately and prevents the status transition',async()=>{
   await page.locator('[data-modality="video"]').click();await page.locator('[data-bind="segment.end"]').fill('0');assert.match(await page.locator('#live-validation').textContent(),/待修正/);await page.locator('[data-action="submit"]').click();assert.match(await page.locator('#modal-body').textContent(),/结束时间必须大于开始时间/);await page.locator('[data-action="close-modal"]').first().click();await page.locator('[data-bind="segment.end"]').fill('3.9');assert.match(await page.locator('#live-validation').textContent(),/即时规则通过/);await page.screenshot({path:path.join(ROOT,'docs/live_validation.png')});
  });
- assert.deepEqual(errors,[]);fs.writeFileSync(path.join(ROOT,'docs/json_validator_verification.json'),JSON.stringify({date:'2026-10-29',version:2,checks,errors},null,2));await browser.close();
+ assert.deepEqual(errors,[]);fs.writeFileSync(path.join(ROOT,'docs',REPORT_NAME),JSON.stringify({date:'2026-10-29',version:2,url:BASE_URL,checks,errors},null,2));await browser.close();
 }
-run().catch(error=>{fs.writeFileSync(path.join(ROOT,'docs/json_validator_verification.json'),JSON.stringify({checks,errors,failure:error.stack},null,2));process.stderr.write(error.stack);process.exit(1);});
+run().catch(error=>{fs.writeFileSync(path.join(ROOT,'docs',REPORT_NAME),JSON.stringify({url:BASE_URL,checks,errors,failure:error.stack},null,2));process.stderr.write(error.stack);process.exit(1);});

@@ -4,6 +4,8 @@ const path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require('C:/Users/29346/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const ROOT=path.resolve(__dirname,'..');
+const BASE_URL=process.env.ANNOTA_BASE_URL||'http://127.0.0.1:8768/';
+const REPORT_NAME=process.env.ANNOTA_BASE_URL?'pages_workflow_verification.json':'browser_verification.json';
 const checks=[];
 const errors=[];
 async function check(name,operation){await operation();checks.push(name);process.stdout.write(`PASS ${name}\n`);}
@@ -17,7 +19,7 @@ async function run(){
  const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
  const context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});
  const page=await context.newPage();page.on('pageerror',error=>errors.push(error.message));
- await page.goto('http://127.0.0.1:8768/',{waitUntil:'networkidle'});
+ await page.goto(BASE_URL,{waitUntil:'networkidle'});
  await check('audio loads actual WAV, plays and changes playback speed',async()=>{
   await page.waitForFunction(()=>document.querySelector('audio')?.readyState>=2);
   assert(Math.abs(await page.locator('audio').evaluate(audio=>audio.duration)-4.898503)<.01);
@@ -100,15 +102,15 @@ async function run(){
  await check('corrupted storage is protected against automatic overwrite',async()=>{
   const protectedPage=await context.newPage();
   await protectedPage.addInitScript(()=>localStorage.setItem('annota_studio_v1','broken-json'));
-  await protectedPage.goto('http://127.0.0.1:8768/',{waitUntil:'networkidle'});assert.equal(await protectedPage.evaluate(()=>localStorage.getItem('annota_studio_v1')),'broken-json');await protectedPage.close();
+  await protectedPage.goto(BASE_URL,{waitUntil:'networkidle'});assert.equal(await protectedPage.evaluate(()=>localStorage.getItem('annota_studio_v1')),'broken-json');await protectedPage.close();
  });
  await check('double-click offline entry loads all media without external requests',async()=>{
   const offline=await context.newPage();offline.on('pageerror',error=>errors.push(error.message));const external=[];offline.on('request',request=>{if(/^https?:/.test(request.url()))external.push(request.url());});
   await offline.goto(pathToFileURL(path.join(ROOT,'打开演示.html')).href,{waitUntil:'load'});await offline.waitForFunction(()=>document.querySelector('audio')?.readyState>=2);
   await offline.locator('[data-modality="image"]').click();await offline.locator('#visual-media').evaluate(img=>img.decode());await offline.locator('[data-modality="video"]').click();await offline.waitForFunction(()=>document.querySelector('video')?.readyState>=2);assert.deepEqual(external,[]);await offline.close();
  });
- assert.deepEqual(errors,[]);fs.writeFileSync(path.join(ROOT,'docs','browser_verification.json'),JSON.stringify({date:'2026-10-29',checks,errors},null,2));
+ assert.deepEqual(errors,[]);fs.writeFileSync(path.join(ROOT,'docs',REPORT_NAME),JSON.stringify({date:'2026-10-29',url:BASE_URL,checks,errors},null,2));
  await browser.close();
 }
-run().catch(error=>{fs.writeFileSync(path.join(ROOT,'docs','browser_verification.json'),JSON.stringify({checks,errors,failure:error.stack},null,2));process.stderr.write(error.stack);process.exit(1);});
+run().catch(error=>{fs.writeFileSync(path.join(ROOT,'docs',REPORT_NAME),JSON.stringify({url:BASE_URL,checks,errors,failure:error.stack},null,2));process.stderr.write(error.stack);process.exit(1);});
 

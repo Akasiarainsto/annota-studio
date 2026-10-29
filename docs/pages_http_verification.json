@@ -1,0 +1,152 @@
+{
+  "url": "https://akasiarainsto.github.io/annota-studio/",
+  "runtimeFiles": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "3472e61ba2172d5868830c13393911b298c57a1f63d65f870f969c53f67d7ada"
+    },
+    {
+      "path": "styles.css",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "964f0dd17925b021eeba5fc78aac26e9374408ace07c5124ed5d5165dfc2460f"
+    },
+    {
+      "path": "src/app.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "cf36acf8bca3f6037d598ddf00dffb9632322bef8a05e0c84e16ddbee422088b"
+    },
+    {
+      "path": "src/audio-peaks.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "7b51f805ee6ac95a7d61b017ea7458ac9c1973261b904fc261c4e7295c570a13"
+    },
+    {
+      "path": "src/core.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "c627c3c18d9bf89a3811543f9876a997c2ec09a3781965979d1559426dd15677"
+    },
+    {
+      "path": "src/icons.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "b48f843d2cf44cbd685fb3328fc4c03f2e4c880dfa9fddd5b58ae617477d1ded"
+    },
+    {
+      "path": "src/json-parser.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "11a59eb5fadb82cdce2a61867563d42371a90e4ad1b913c0efe11155db379225"
+    },
+    {
+      "path": "src/json-validation.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "e2e20f9fa5e89558e7f4519dd58de8ca6a41c7a3c5c56a5375e5cb91f35ae945"
+    },
+    {
+      "path": "src/json-validator.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "9bdea9a9cb4c9e5dd6396ae482dd577f4bdbd056a9ddd2da3268747d9c2805a5"
+    },
+    {
+      "path": "src/media.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "5f68e95ab16621d6287da3ce21157c86059dc6ce527acee16b02b17f49af4b82"
+    },
+    {
+      "path": "src/seed-data.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "b288a35086837a70b8326f527c606b30b079c302b9839bcc35d8a85c8b7b83c5"
+    },
+    {
+      "path": "src/storage.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "1c0e60fbb542dcd9015e2404e07adec062e7a5b026fea761b6b3d7f9c6ad4323"
+    },
+    {
+      "path": "src/utils.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "b5993f1986c3920205e2fc2cfbd1441b6a593c00723d9deb327e11daff00f630"
+    },
+    {
+      "path": "src/validation-adapters.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "f93833dd5f4cb4797aa222b83d68d9738c02df8d0717b522ad2c4afeacbbf1f5"
+    },
+    {
+      "path": "src/validation-samples.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "c69d0739285a4af57873bf7219b0815e80b49c6a5e129314a80b128566ed4df9"
+    },
+    {
+      "path": "src/validation_rules/audio-rules.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "f15ecb29194d6aa84e754b513ffe30aed4ab97b49a3827393f426e56857e0fd4"
+    },
+    {
+      "path": "src/validation_rules/common.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "c31258c4acaf10403ced29853ede661b506926353d584991ac05af230588830c"
+    },
+    {
+      "path": "src/validation_rules/image-rules.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "d79a189c6bcffef37d156980ce0b8b0bea78a4011ded63eab8d41dccac89d2b6"
+    },
+    {
+      "path": "src/validation_rules/profiles.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "f1068b38c8f3ebf301b58e2afa698d10611e6f1997c7dc713bdae9bb5a3c043d"
+    },
+    {
+      "path": "src/validation_rules/video-rules.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "e536eb8d80e36b638c5fd73ab7f5508eba0ea1fcfe1b64a926fffd6150024a39"
+    },
+    {
+      "path": "src/views.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "6f0b63fafdcd46142dcb767860a44b64e018eec3ca3d0dcd5ca79b603fc1140e"
+    }
+  ],
+  "mediaRangeChecks": [
+    {
+      "path": "assets/meeting.wav",
+      "status": 206,
+      "contentType": "audio/wav",
+      "contentRange": "bytes 0-127/216070"
+    },
+    {
+      "path": "assets/motion_good.webm",
+      "status": 206,
+      "contentType": "video/webm",
+      "contentRange": "bytes 0-127/206367"
+    },
+    {
+      "path": "assets/workspace.jpg",
+      "status": 206,
+      "contentType": "image/jpeg",
+      "contentRange": "bytes 0-127/142081"
+    }
+  ],
+  "errors": []
+}
