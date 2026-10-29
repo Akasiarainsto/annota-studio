@@ -1,5 +1,6 @@
 {
   "date": "2026-10-29",
+  "url": "http://127.0.0.1:8768/",
   "checks": [
     "audio loads actual WAV, plays and changes playback speed",
     "audio edit persists after reload and independent CER remains 14.3%",

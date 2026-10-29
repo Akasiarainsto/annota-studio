@@ -1,5 +1,7 @@
+import {validateReviewState} from './review-workflow.js';
+
 export const STATUS_LABELS = Object.freeze({
-  draft: '草稿', pending: '待质检', approved: '已验收', returned: '已退回',
+  draft: '草稿', pending: '待质检', approved: '已验收', returned: '已退回', disputed: '待仲裁',
 });
 
 const MODALITIES = new Set(['audio', 'image', 'video']);
@@ -63,6 +65,7 @@ function validateTaskShape(task) {
   if (!Number.isSafeInteger(task.revision) || task.revision < 0) issues.push(createIssue('revision', '修订号必须是非负整数'));
   if (typeof task.isDemo !== 'boolean') issues.push(createIssue('isDemo', '模拟样本标记必须是布尔值'));
   issues.push(...validateMediaShape(task.media), ...validateCollectionShapes(task));
+  issues.push(...validateReviewState(task));
   if (!isObject(task.evaluation)) issues.push(createIssue('evaluation', '评测数据必须是对象'));
   else issues.push(...validateEvaluationShape(task.evaluation));
   return issues;
@@ -186,7 +189,7 @@ export function validateBackup(value) {
   for (const [index, task] of value.tasks.entries()) {
     const taskIssues = validateTaskShape(task);
     if (!taskIssues.length) taskIssues.push(...validateSegmentShapes(task), ...validateSpatialShapes(task));
-    if (!taskIssues.length && ['pending', 'approved'].includes(task.status)) taskIssues.push(...validateTask(task));
+    if (!taskIssues.length && ['pending', 'approved', 'disputed'].includes(task.status)) taskIssues.push(...validateTask(task));
     if (isObject(task) && ids.has(task.id)) taskIssues.push(createIssue('id', '备份中任务 ID 重复'));
     if (isObject(task)) ids.add(task.id);
     issues.push(...taskIssues.map(issue => createIssue(`tasks.${index}.${issue.field}`, issue.message)));

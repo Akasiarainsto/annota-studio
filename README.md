@@ -15,8 +15,10 @@
 
 - 音频：真实幅度波形、拖选分段、逐段试听、倍速/循环、转写和说话人/语种/方言/场景属性。
 - 视频：时间分段、七项 Dense Caption、归一坐标目标框关键帧与线性插值。1/30秒是演示步进，不代表视频真实帧率。
+- 视频模型评测：左右 A/B 共用播放、暂停、从头播放、进度和倍速；自动校正明显时间漂移，任一侧缓冲或出错时一起暂停，按较短媒体时长结束，离开页面停止两侧。
 - 图片：Caption、内容标签、框选、选择移动、坐标调整、删除和撤销。
 - 共用：空白练习、媒体导入、本地草稿、提交、带理由退回、逐项验收、标注/评测分开导出、工作区JSON备份与恢复。
+- 双人复核：首位记录独立意见，另一姓名确认后验收；支持退回、分歧与仲裁，每次重提开启新周期。姓名、意见、周期、修订和时间随备份保存；旧版单次复核记录保留并明确标识。详见 `docs/双人复核与双视频同步.md`。
 - 分模态 JSON 校验：Dolphin 音频、Seedance 视频、Seedream 图片分别使用原对话对应的字段契约、规则与演示数据；提供 25 个专项案例、原文行列定位、修改复检、文本/问题 CSV/报告 JSON 下载。图片可选择根目录核对文件清单，校验不写入任务库。详见 `docs/分模态JSON校验与即时拦截.md`。
 - 即时校验与流程拦截：编辑时提示必填项、枚举、时间及坐标问题；允许保存未完成草稿，提交质检与验收时复用对应规则，不合格任务不能进入下一状态。
 - 三个独立环节：数据标注=制作数据，数据质检=检查人工记录，模型评测=判断原始模型输出。CER只使用独立参考稿与未改写的ASR原稿。
@@ -28,6 +30,7 @@
 ## 结构
 
 - `src/core.js`：纯业务规则、CER、轨迹插值、审核失效和标注快照。
+- `src/review-workflow.js` / `src/review-view.js`：双人复核状态机、备份审计和复核界面；`src/video-comparison.js`：双视频播放与生命周期控制。
 - `src/validation_rules/`：独立的音频、视频、图片规则与共用基础检查；`src/validation-adapters.js` 将工作台任务转换成对应训练格式。
 - `src/json-validation.js` / `src/json-parser.js`：格式解析、问题定位与分模态校验入口；`src/json-validator.js` 管理文件校验界面，`examples/` 提供与界面一致的 JSON/JSONL 案例。
 - `src/storage.js`：浏览器存储适配器。
@@ -40,7 +43,7 @@
 
 ## 开发验证
 
-无需安装项目运行依赖。业务测试使用 Node.js：`node --test tests/core.test.mjs tests/json-validation.test.mjs`。`tests/json-validator-browser.cjs` 验证独立 JSON 校验操作，`tests/browser-workflow.cjs` 回归原有媒体与审核流程。浏览器验证脚本依赖此机器已有的 Playwright 和 Edge，依赖不进入站点运行包。
+无需安装项目运行依赖。业务测试使用 Node.js：`node --test tests/core.test.mjs tests/json-validation.test.mjs tests/review-workflow.test.mjs`。`tests/json-validator-browser.cjs` 验证独立 JSON 校验操作，`tests/browser-workflow.cjs` 回归媒体与审核流程，`tests/review-sync-browser.cjs` 专项验证双人复核与双视频同步。浏览器验证脚本依赖此机器已有的 Playwright 和 Edge，依赖不进入站点运行包。设置 `ANNOTA_BASE_URL` 可在正式网站复测。
 
 `打开演示.html` 为模块化源的离线合并版；修改源后运行 `python scripts/build_offline.py` 重新生成。它与标准入口使用相同逻辑，没有另一套业务实现。
 

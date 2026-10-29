@@ -228,6 +228,18 @@ small { font-size: 12px; }
 .issue_item { border: 1px solid #efdde3; background: #fcf5f7; color: #a65064; padding: 11px 13px; border-radius: 7px; font-size: 12px; text-align: left; }
 .issue_item small { display: block; color: #b37c8a; font: 10px Consolas, monospace; margin-top: 5px; overflow-wrap: anywhere; }
 .review_actions { display: flex; gap: 9px; padding-top: 15px; flex-wrap: wrap; }
+.review_progress { background: var(--accent_soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin: 12px 0; font-weight: 600; font-size: 12px; }
+.review_progress small, .review_entry small { display: block; color: var(--muted); font-weight: 400; margin-top: 5px; }
+.review_entry { background: #f8f8fc; border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 10px; overflow-wrap: anywhere; font-size: 12px; }
+.review_entry p { margin-top: 8px; white-space: pre-wrap; }
+.badge.status_disputed { color: #9a6617; background: #fff2d8; }
+.status_dot.status_disputed { background: #c18a31; }
+.pair_transport { margin-top: 16px; border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 12px; }
+.pair_buttons { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; min-width: 0; }
+.pair_buttons .mono { font-size: 12px; margin-right: auto; }
+.pair_buttons select { width: 74px; padding: 6px; border: 1px solid var(--line); border-radius: 6px; background: white; }
+.pair_transport input[type="range"] { width: 100%; min-width: 0; accent-color: var(--accent); }
+.pair_transport small { font-size: 11px; color: var(--muted); }
 .comparison_grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 13px; margin: 16px 0; }
 .comparison_pane { background: #f8f8fc; border: 1px solid var(--line); border-radius: 8px; padding: 15px; min-width: 0; overflow-wrap: anywhere; font-size: 14px; line-height: 1.9; }
 .comparison_pane h3 { font-size: 12px; color: #717a90; margin-bottom: 10px; }

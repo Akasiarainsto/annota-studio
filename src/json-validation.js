@@ -77,7 +77,7 @@ export function validateLiveTask(task) {
   const record=toTrainingRecord(task);
   const native=CHECKERS[task.modality]([1,record],new Set([normalizeMediaPath(task.media?.name)]));
   const issues=native.map(issue=>({...issue,field:mapTrainingField(task.modality,issue.field)}));
-  const extras=core.filter(issue=>/^(regions|tracks|media\.(width|height)|modality|status|revision|isDemo|segments\.[1-9]\d*\.language$)/.test(issue.field));
+  const extras=core.filter(issue=>/^(regions|tracks|reviews|media\.(width|height)|modality|status|revision|isDemo|segments\.[1-9]\d*\.language$)/.test(issue.field));
   if(task.modality==='audio'&&Array.isArray(task.segments))task.segments.forEach((segment,index)=>{
     if(!['Speech','Noise'].includes(segment.label))extras.push({field:`segments.${index}.label`,code:'KIND_ENUM',message:'片段类型只能为 Speech 或 Noise。'});
     if(segment.dialect&&!AUDIO_DIALECTS.has(segment.dialect.replace('（合成）','')))extras.push({field:`segments.${index}.dialect`,code:'DIALECT_ENUM',message:'方言属性不在约定枚举内。'});

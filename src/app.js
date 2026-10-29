@@ -8,6 +8,8 @@ import {mountMedia} from './media.js';
 import {openJsonValidator} from './json-validator.js';
 import {createAnnotationDocument} from './validation-adapters.js';
 import {validateLiveTask} from './json-validation.js';
+import {startReview,applyReviewDecision,upgradeReviewTask,REVIEW_LABELS} from './review-workflow.js';
+import {mountVideoComparison} from './video-comparison.js';
 
 const STORAGE_KEY='annota_studio_v1';
 const MAX_UNDO=40;
@@ -117,7 +119,7 @@ async function renderWorkspace() {
   const left=`<div class="media_column">${media}${views.timeline(task,editable)}${views.segmentsPanel(task,state,editable)}<p class="workflow_hint">${icon('info')} ${hint}</p></div>`;
   const right=`<aside class="inspector">${editable?views.inspector(task,state):views.reviewPanel(task,validateLiveTask(task))}</aside>`;
   workspace.innerHTML=views.heading(task,state.phase)+(state.phase==='evaluation'?renderEvaluation(task,media):`<div class="workbench_grid">${left}${right}</div>`);
-  mediaController=mountMedia(mediaOptions(task,editable));
+  mediaController=workspace.querySelector('[data-pair-video]')?mountVideoComparison({root:workspace,onError:notify}):mountMedia(mediaOptions(task,editable));
   refreshSegments();renderTasks();refreshLiveValidation();
 }
 function renderEvaluation(task,media) {
@@ -185,18 +187,21 @@ function updateInput(element) {
 function submitTask() {
   const issues=validateLiveTask(currentTask());
   if(issues.length){showModal('提交前，请完成这些标注',`<div class="issue_list">${issues.map(issue=>`<button class="issue_item" data-issue="${esc(issue.field)}">${esc(issue.message)}<small>${esc(issue.field)}</small></button>`).join('')}</div>`);return;}
-  currentTask().status='pending';saveTasks({quiet:true});renderTasks();refreshHeading();notify('已提交质检。切换“数据质检”检查人工标注。');
+  const result=startReview(currentTask());if(!result.ok){notify(result.message);return;}
+  Object.assign(currentTask(),result.task);saveTasks({quiet:true});renderTasks();refreshHeading();notify('已开启新复核周期。请在“数据质检”由两位不同姓名分别填写意见。');
 }
 function reviewTask(decision) {
-  const task=currentTask();if(task.status!=='pending')return;
+  const task=currentTask();
   const note=document.querySelector('#review-note')?.value.trim() || '';
-  if(decision==='returned'&&!note){notify('请填写具体的退回原因。');return;}
   if(decision==='approved') {
     if(validateLiveTask(task).length){notify('结构检查尚未通过，请退回标注修正。');return;}
-    if(document.querySelectorAll('[data-review-check]:checked').length!==3){notify('请逐项完成人工复核后再通过验收。');return;}
+    const media=workspace.querySelector('#media-player,#visual-media');
+    if(!media||(task.modality==='image'?!media.naturalWidth:media.readyState<2)){notify('请先载入可核对的媒体素材，再记录通过意见。');return;}
   }
-  task.reviews.push({id:createId('review'),revision:task.revision,decision,note:note || '逐项复核完成，当前标注验收通过。',at:new Date().toISOString()});
-  task.status=decision;saveTasks({quiet:true});renderTasks();refreshHeading();refreshInspector();notify(decision==='approved'?'当前修订已通过验收':'已退回修改，意见保存在审核记录中');
+  const result=applyReviewDecision(task,{decision,note,reviewer:document.querySelector('#reviewer')?.value||'',checksConfirmed:document.querySelectorAll('[data-review-check]:checked').length===3,id:createId('review'),at:new Date().toISOString()});
+  if(!result.ok){notify(result.message);return;}
+  Object.assign(task,result.task);saveTasks({quiet:true});renderTasks();refreshHeading();refreshInspector();
+  const recorded=task.reviews.at(-1);notify(recorded.decision==='opinion'?'已记录首轮意见，任务仍待质检；请由另一位复核人确认。':`已记录：${REVIEW_LABELS[recorded.decision]}`);
 }
 function locateIssue(path) {
   document.querySelector('#modal').close();state.phase='annotation';
@@ -219,7 +224,7 @@ function exportEvaluation() {
 }
 function blankPractice() {
   const task=structuredClone(currentTask());task.id=createId(`${PROJECTS[task.modality].name.toLowerCase()}_practice`);
-  task.title=`空白练习 · ${task.media.name}`;task.caption='';task.tags=[];task.segments=[];task.regions=[];task.tracks=[];task.reviews=[];task.revision=1;task.status='draft';task.updatedAt=new Date().toISOString();
+  task.title=`空白练习 · ${task.media.name}`;task.caption='';task.tags=[];task.segments=[];task.regions=[];task.tracks=[];task.reviews=[];task.reviewRound=0;task.revision=1;task.status='draft';task.updatedAt=new Date().toISOString();
   task.evaluation={asrOriginal:'',reference:'',ratings:{},outcome:'',notes:''};
   state.tasks.unshift(task);state.taskId=task.id;state.undo=[];saveTasks({quiet:true});renderWorkspace();notify('已创建独立空白练习，原任务保留。');
 }
@@ -258,7 +263,7 @@ async function restoreBackup(file) {
       if(state.tasks.some(existing=>existing.id===task.id)){task.id=createId('restored');task.title=`恢复副本 · ${task.title}`;}
       if(!knownUrls.has(task.media.url)){task.media.url='';task.media.imported=true;}
       if(!knownUrls.has(task.evaluation.comparisonUrl))delete task.evaluation.comparisonUrl;
-      state.tasks.push(task);
+      state.tasks.push(upgradeReviewTask(task));
     }
     saveTasks({quiet:true});renderTasks();notify(`已恢复 ${backup.tasks.length} 个任务，重名任务保留为副本。`);
   } catch(error){notify(`恢复失败，现有任务未更改：${error.message}`);}
@@ -269,7 +274,7 @@ function showTaskInfo() {
 }
 function showHelp() {
   const protection=state.blocked?'<div class="notice error">原有草稿损坏，已停止自动覆盖。可先导出当前备份，再重建存储。</div><button class="button danger" data-action="reset-storage">重建当前浏览器草稿</button>':'';
-  showModal('把注意力留给标注',`<div class="help_grid"><div><h3>数据标注</h3><p>记录素材里有什么。音频写转写，视频写片段描述，图片写 Caption 和目标框。</p></div><div><h3>数据质检</h3><p>先检查结构，再人工核对内容；带理由退回或逐项验收。</p></div><div><h3>模型评测</h3><p>只检查模型原始输出。ASR 原稿和人工修订稿分开。</p></div><div><h3>本地与来源</h3><p>预置数据为模拟。导入媒体存本浏览器，备份仅含标注和元数据；跨设备恢复需重新关联媒体。</p></div></div><div class="form_section"><h3>快捷键</h3><p>空格 播放/暂停 · [ 取起点 · ] 取终点 · V 选择 · B 框选 · Ctrl S 保存 · Ctrl Z 撤销 · Delete 删除当前对象</p></div><div class="inline_notice" style="margin-top:18px">JSON 通过只表示符合所检查的结构/时间/坐标规则，不能证明内容准确或模型表现好。本演示不调用模型服务。</div>${protection}`);
+  showModal('把注意力留给标注',`<div class="help_grid"><div><h3>数据标注</h3><p>记录素材里有什么。音频写转写，视频写片段描述，图片写 Caption 和目标框。</p></div><div><h3>数据质检</h3><p>先检查结构，再由两名不同姓名分别填写意见；可退回、提交分歧或仲裁。</p></div><div><h3>模型评测</h3><p>只检查模型原始输出。ASR 原稿和人工修订稿分开。</p></div><div><h3>本地与来源</h3><p>预置数据为模拟。导入媒体存本浏览器，备份仅含标注和元数据；跨设备恢复需重新关联媒体。</p></div></div><div class="form_section"><h3>快捷键</h3><p>空格 播放/暂停 · [ 取起点 · ] 取终点 · V 选择 · B 框选 · Ctrl S 保存 · Ctrl Z 撤销 · Delete 删除当前对象</p></div><div class="inline_notice" style="margin-top:18px">JSON 通过只表示符合所检查的结构/时间/坐标规则，不能证明内容准确或模型表现好。本演示不调用模型服务。</div>${protection}`);
 }
 function showExport() {
   showModal('导出工作成果','<p>标注和模型评测分别导出，工作区备份保留全部记录。</p><div class="notice" style="margin-top:16px">备份 JSON 不包含媒体二进制文件。请保留原始音频、视频与图片。</div>','<button class="button" data-action="export-current">当前标注 JSON</button><button class="button" data-action="export-evaluation">当前评测 JSON</button><button class="button primary" data-action="export-backup">全部工作区备份</button>');
@@ -277,7 +282,8 @@ function showExport() {
 function undoTask() {
   const previous=state.undo.pop();if(!previous){notify('没有可撤销的标注操作。');return;}
   const task=currentTask();const evaluation=task.evaluation;
-  const revision=task.revision+1;Object.assign(task,previous,{evaluation,revision,status:'draft',updatedAt:new Date().toISOString()});
+  const revision=task.revision+1;const reviews=task.reviews;const reviewRound=task.reviewRound;
+  Object.assign(task,previous,{evaluation,reviews,reviewRound,revision,status:'draft',updatedAt:new Date().toISOString()});
   normaliseSelection();saveTasks({quiet:true});renderTasks();refreshHeading();refreshInspector();refreshSegments();mediaController?.repaint();
 }
 function setBoundary(key) {
@@ -300,7 +306,7 @@ function zoomImage(delta) {
 }
 const ACTIONS={
   'json-validate':()=>openJsonValidator({getCurrentTask:currentTask,seedTasks:SEED_TASKS,notify}),
-  save:()=>saveTasks(),submit:submitTask,approve:()=>reviewTask('approved'),return:()=>reviewTask('returned'),
+  save:()=>saveTasks(),submit:submitTask,approve:()=>reviewTask('approved'),return:()=>reviewTask('returned'),dispute:()=>reviewTask('disputed'),
   import:()=>{relinkId=null;document.querySelector('#media-import').click();},
   relink:()=>{relinkId=state.taskId;document.querySelector('#media-import').click();},
   'backup-import':()=>document.querySelector('#backup-import').click(),export:showExport,'export-current':exportCurrent,'export-backup':exportBackup,'export-evaluation':exportEvaluation,
@@ -352,6 +358,7 @@ function handleKey(event) {
 }
 async function initialise() {
   if(loaded.backup){const issues=validateBackup(loaded.backup);if(issues.length){state.tasks=structuredClone(SEED_TASKS);state.blocked=true;}}
+  state.tasks=state.tasks.map(upgradeReviewTask);
   if(!state.tasks.some(task=>task.id===state.taskId))state.taskId=state.tasks[0].id;
   state.modality=currentTask().modality;
   document.addEventListener('click',handleClick);document.addEventListener('keydown',handleKey);

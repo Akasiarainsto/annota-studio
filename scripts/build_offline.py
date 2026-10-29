@@ -3,7 +3,7 @@ from pathlib import Path, PurePosixPath
 import re
 
 ROOT=Path(__file__).resolve().parents[1]
-MODULES=['icons','utils','audio-peaks','seed-data','core','storage','validation_rules/profiles','validation_rules/common','validation_rules/image-rules','validation_rules/video-rules','validation_rules/audio-rules','validation-adapters','validation-samples','json-parser','json-validation','views','media','json-validator','app']
+MODULES=['icons','utils','audio-peaks','seed-data','review-workflow','core','storage','validation_rules/profiles','validation_rules/common','validation_rules/image-rules','validation_rules/video-rules','validation_rules/audio-rules','validation-adapters','validation-samples','json-parser','json-validation','review-view','views','media','video-comparison','json-validator','app']
 
 def transform_module(name):
     source=(ROOT/'src'/f'{name}.js').read_text(encoding='utf-8')

@@ -41,13 +41,17 @@ async function run(){
  await check('submit, reason-required return, revise, approve, and edit invalidates approval',async()=>{
   await page.locator('[data-action="submit"]').click();await page.locator('[data-phase="review"]').click();await page.waitForSelector('#review-note');
   await page.locator('[data-action="return"]').click();assert.equal((await savedTask(page,'DOL-001')).status,'pending');
-  await page.locator('#review-note').fill('请核对第一句时间边界。');await page.locator('[data-action="return"]').click();assert.equal((await savedTask(page,'DOL-001')).status,'returned');
+  await page.locator('#reviewer').fill('复核甲');await page.locator('#review-note').fill('请核对第一句时间边界。');await page.locator('[data-action="return"]').click();assert.equal((await savedTask(page,'DOL-001')).status,'returned');
   await page.locator('[data-phase="annotation"]').click();await page.locator('[data-bind="segment.text"]').fill('今天下午三点，');
   await page.locator('[data-action="submit"]').click();await page.locator('[data-phase="review"]').click();
   for(const checkbox of await page.locator('[data-review-check]').all())await checkbox.check();
+  await page.locator('#reviewer').fill('复核甲');await page.locator('#review-note').fill('已核对素材与标注一致。');
+  await page.locator('[data-action="approve"]').click();assert.equal((await savedTask(page,'DOL-001')).status,'pending');
+  for(const checkbox of await page.locator('[data-review-check]').all())await checkbox.check();
+  await page.locator('#reviewer').fill('复核乙');await page.locator('#review-note').fill('独立核对通过。');
   await page.locator('[data-action="approve"]').click();assert.equal((await savedTask(page,'DOL-001')).status,'approved');
   await page.locator('[data-phase="annotation"]').click();await page.locator('[data-bind="segment.scene"]').fill('会议通知');await save(page);
-  const task=await savedTask(page,'DOL-001');assert.equal(task.status,'draft');assert.equal(task.reviews.length,2);assert(task.revision>1);
+  const task=await savedTask(page,'DOL-001');assert.equal(task.status,'draft');assert.equal(task.reviews.length,3);assert(task.revision>1);
  });
  await check('blank audio practice uses drag-created real time segment',async()=>{
   await page.locator('[data-action="blank"]').click();await page.waitForSelector('.empty_state');await drag(page,'#timeline-canvas',[.1,.5],[.5,.5]);
