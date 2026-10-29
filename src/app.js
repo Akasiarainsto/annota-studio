@@ -10,10 +10,14 @@ import {createAnnotationDocument} from './validation-adapters.js';
 import {validateLiveTask} from './json-validation.js';
 import {startReview,applyReviewDecision,upgradeReviewTask,REVIEW_LABELS} from './review-workflow.js';
 import {mountVideoComparison} from './video-comparison.js';
+import {getCloudContext} from './cloud-context.js';
+import {readAudioPeaks} from './media-import.js';
+import {createClipWorkflow} from './clip-workflow.js';
 
 const STORAGE_KEY='annota_studio_v1';
 const MAX_UNDO=40;
 const loaded=loadTasks(SEED_TASKS);
+const cloud=getCloudContext();
 const state={tasks:loaded.tasks,phase:'annotation',modality:'audio',taskId:'DOL-001',segmentId:'seg_meeting_1',regionId:null,trackId:null,tool:'select',inspectorTab:'annotation',query:'',filter:'all',zoom:1,blocked:loaded.blocked,undo:[],loop:false};
 const workspace=document.querySelector('#workspace');
 let mediaController=null;
@@ -22,6 +26,7 @@ let toastTimer=null;
 let relinkId=null;
 let renderToken=0;
 const objectUrls=new Map();
+const clips=createClipWorkflow({getTask:currentTask,getSegment:selectedSegment,getTime:()=>mediaController?.currentTime||0,addSegment,seek:time=>mediaController?.seek(time),notify,showModal,readMedia});
 
 function currentTask() {return state.tasks.find(task=>task.id===state.taskId);}
 function selectedSegment() {return currentTask().segments.find(segment=>segment.id===state.segmentId);}
@@ -40,16 +45,17 @@ function showModal(title,body,actions='') {
   document.querySelector('#modal-actions').innerHTML=actions || '<button class="button primary" data-action="close-modal">知道了</button>';
   document.querySelector('#modal').showModal();
 }
-function saveTasks(options={}) {
+async function saveTasks(options={}) {
   clearTimeout(saveTimer);
   if(state.blocked) {if(!options.quiet) notify('草稿保护已开启，请先导出备份或在帮助中重建存储。');return false;}
   try {
-    persistTasks(state.tasks);
-    document.querySelector('#save-indicator').textContent='草稿已存本机';
-    if(!options.quiet)notify('草稿已保存在当前浏览器');return true;
+    if(cloud&&!cloud.canEdit){if(!options.quiet)notify('此云端任务为只读');return false;}
+    await persistTasks(state.tasks);
+    document.querySelector('#save-indicator').textContent=cloud?(cloud.pending?'云端同步中…':'已保存到云端'):'草稿已存本机';
+    if(!options.quiet)notify(cloud?'标注已保存在云端':'草稿已保存在当前浏览器');return true;
   } catch(error) {
     document.querySelector('#save-indicator').textContent='保存失败 · 请导出备份';
-    notify(`本地保存失败，当前编辑仍在内存中：${error.message}`);return false;
+    notify(`保存失败，当前编辑仍在内存中：${error.message}`);return false;
   }
 }
 function rememberTask() {
@@ -78,13 +84,13 @@ function renderTasks() {
 function refreshSegments() {
   const task=currentTask();
   const list=document.querySelector('#segment-list');
-  if(list)list.innerHTML=views.segmentRows(task,state,state.phase==='annotation');
+  if(list)list.innerHTML=views.segmentRows(task,state,state.phase==='annotation'&&(!cloud||cloud.canEdit));
   const lane=document.querySelector('#segment-lane');
   if(lane)lane.innerHTML=task.segments.map((segment,index)=>`<button class="segment_chip ${segment.id===state.segmentId?'active':''}" data-segment="${esc(segment.id)}">${String(index+1).padStart(2,'0')} ${esc(segment.speaker || segment.label || '片段')}</button>`).join('');
 }
 function refreshInspector() {
   const element=workspace.querySelector('.inspector');
-  if(element)element.innerHTML=state.phase==='review'?views.reviewPanel(currentTask(),validateLiveTask(currentTask())):views.inspector(currentTask(),state);
+  if(element)element.innerHTML=cloud&&(state.phase==='review'||!cloud.canEdit)?views.cloudReviewPanel(currentTask(),cloud):state.phase==='review'?views.reviewPanel(currentTask(),validateLiveTask(currentTask())):views.inspector(currentTask(),state);
   refreshLiveValidation();
 }
 function refreshLiveValidation() {
@@ -109,18 +115,20 @@ function normaliseSelection() {
 }
 async function renderWorkspace() {
   const token=++renderToken;
+  if(clips.active)clips.cancel();
   mediaController?.destroy();mediaController=null;
   const task=currentTask();await ensureMedia(task);if(token!==renderToken)return;
   normaliseSelection();
   document.querySelectorAll('[data-phase]').forEach(button=>button.classList.toggle('active',button.dataset.phase===state.phase));
-  const editable=state.phase==='annotation';
+  const editable=state.phase==='annotation'&&(!cloud||cloud.canEdit);
   const media=task.media.url?views.mediaPanel(task,editable,state):'<section class="media_panel"><div class="empty_state">此浏览器中没有关联的媒体文件。<br><button class="button primary" data-action="relink">重新关联素材</button></div></section>';
   const hint=task.modality==='image'?'框选记录目标位置，Caption 记录整体内容。':task.modality==='audio'?'选择片段 → 试听 → 转写与属性 → 提交质检。':'选择片段 → 七项描述；目标轨迹单独记录关键帧。';
   const left=`<div class="media_column">${media}${views.timeline(task,editable)}${views.segmentsPanel(task,state,editable)}<p class="workflow_hint">${icon('info')} ${hint}</p></div>`;
-  const right=`<aside class="inspector">${editable?views.inspector(task,state):views.reviewPanel(task,validateLiveTask(task))}</aside>`;
+  const right=`<aside class="inspector">${editable?views.inspector(task,state):cloud?views.cloudReviewPanel(task,cloud):views.reviewPanel(task,validateLiveTask(task))}</aside>`;
   workspace.innerHTML=views.heading(task,state.phase)+(state.phase==='evaluation'?renderEvaluation(task,media):`<div class="workbench_grid">${left}${right}</div>`);
   mediaController=workspace.querySelector('[data-pair-video]')?mountVideoComparison({root:workspace,onError:notify}):mountMedia(mediaOptions(task,editable));
   refreshSegments();renderTasks();refreshLiveValidation();
+  if(cloud&&!cloud.canEdit)workspace.querySelectorAll('[data-bind],.heading_actions [data-action="save"],.heading_actions [data-action="submit"]').forEach(control=>control.disabled=true);
 }
 function renderEvaluation(task,media) {
   if(task.modality!=='audio')return `<div class="evaluation_layout">${views.evaluationPanel(task)}</div>`;
@@ -184,13 +192,15 @@ function updateInput(element) {
   if(scope==='object'&&selectedObject())selectedObject()[key]=value;
   changedTask({render:false});refreshSegments();mediaController?.repaint();renderTasks();
 }
-function submitTask() {
+async function submitTask() {
   const issues=validateLiveTask(currentTask());
   if(issues.length){showModal('提交前，请完成这些标注',`<div class="issue_list">${issues.map(issue=>`<button class="issue_item" data-issue="${esc(issue.field)}">${esc(issue.message)}<small>${esc(issue.field)}</small></button>`).join('')}</div>`);return;}
+  if(cloud){if(!await saveTasks({quiet:true}))return;try{await cloud.submit();renderTasks();refreshHeading();refreshInspector();notify('已通过服务端校验并提交，请由管理者创建分层抽检批次。');}catch(error){notify(error.message);}return;}
   const result=startReview(currentTask());if(!result.ok){notify(result.message);return;}
   Object.assign(currentTask(),result.task);saveTasks({quiet:true});renderTasks();refreshHeading();notify('已开启新复核周期。请在“数据质检”由两位不同姓名分别填写意见。');
 }
 function reviewTask(decision) {
+  if(cloud){notify('云端独立复核请进入项目的分层抽检队列。');return;}
   const task=currentTask();
   const note=document.querySelector('#review-note')?.value.trim() || '';
   if(decision==='approved') {
@@ -227,15 +237,6 @@ function blankPractice() {
   task.title=`空白练习 · ${task.media.name}`;task.caption='';task.tags=[];task.segments=[];task.regions=[];task.tracks=[];task.reviews=[];task.reviewRound=0;task.revision=1;task.status='draft';task.updatedAt=new Date().toISOString();
   task.evaluation={asrOriginal:'',reference:'',ratings:{},outcome:'',notes:''};
   state.tasks.unshift(task);state.taskId=task.id;state.undo=[];saveTasks({quiet:true});renderWorkspace();notify('已创建独立空白练习，原任务保留。');
-}
-async function readAudioPeaks(file) {
-  const context=new AudioContext();
-  try {
-    const decoded=await context.decodeAudioData(await file.arrayBuffer());
-    const samples=decoded.getChannelData(0);const step=Math.max(1,Math.floor(samples.length/360));const peaks=[];
-    for(let i=0;i<samples.length;i+=step){let peak=0;for(let j=i;j<Math.min(i+step,samples.length);j++)peak=Math.max(peak,Math.abs(samples[j]));peaks.push(peak);}
-    return peaks;
-  } finally {await context.close();}
 }
 function makeImportedTask(file,modality) {
   const id=createId('local');const url=URL.createObjectURL(file);objectUrls.set(id,url);
@@ -277,6 +278,7 @@ function showHelp() {
   showModal('把注意力留给标注',`<div class="help_grid"><div><h3>数据标注</h3><p>记录素材里有什么。音频写转写，视频写片段描述，图片写 Caption 和目标框。</p></div><div><h3>数据质检</h3><p>先检查结构，再由两名不同姓名分别填写意见；可退回、提交分歧或仲裁。</p></div><div><h3>模型评测</h3><p>只检查模型原始输出。ASR 原稿和人工修订稿分开。</p></div><div><h3>本地与来源</h3><p>预置数据为模拟。导入媒体存本浏览器，备份仅含标注和元数据；跨设备恢复需重新关联媒体。</p></div></div><div class="form_section"><h3>快捷键</h3><p>空格 播放/暂停 · [ 取起点 · ] 取终点 · V 选择 · B 框选 · Ctrl S 保存 · Ctrl Z 撤销 · Delete 删除当前对象</p></div><div class="inline_notice" style="margin-top:18px">JSON 通过只表示符合所检查的结构/时间/坐标规则，不能证明内容准确或模型表现好。本演示不调用模型服务。</div>${protection}`);
 }
 function showExport() {
+  if(cloud){showModal('导出当前任务','云端项目与复核记录保存在服务端；这里分别导出当前人工标注与模型评测。','<button class="button" data-action="export-current">当前标注 JSON</button><button class="button" data-action="export-evaluation">当前评测 JSON</button>');return;}
   showModal('导出工作成果','<p>标注和模型评测分别导出，工作区备份保留全部记录。</p><div class="notice" style="margin-top:16px">备份 JSON 不包含媒体二进制文件。请保留原始音频、视频与图片。</div>','<button class="button" data-action="export-current">当前标注 JSON</button><button class="button" data-action="export-evaluation">当前评测 JSON</button><button class="button primary" data-action="export-backup">全部工作区备份</button>');
 }
 function undoTask() {
@@ -305,6 +307,7 @@ function zoomImage(delta) {
   const label=document.querySelector('#zoom-level');if(label)label.textContent=`${Math.round(state.zoom*100)}%`;
 }
 const ACTIONS={
+  'quick-clip':()=>clips.quickClip(),'export-clip':()=>clips.exportClip(),'clip-source':()=>clips.chooseFile(),'cancel-clip':()=>clips.cancel(),
   'json-validate':()=>openJsonValidator({getCurrentTask:currentTask,seedTasks:SEED_TASKS,notify}),
   save:()=>saveTasks(),submit:submitTask,approve:()=>reviewTask('approved'),return:()=>reviewTask('returned'),dispute:()=>reviewTask('disputed'),
   import:()=>{relinkId=null;document.querySelector('#media-import').click();},
@@ -349,6 +352,7 @@ function handleKey(event) {
   if(event.code==='Space'){event.preventDefault();mediaController?.playPause();}
   if(event.key==='?')showHelp();
   if(state.phase!=='annotation')return;
+  if(cloud&&!cloud.canEdit)return;
   if(event.key.toLowerCase()==='b')setTool('box');
   if(event.key.toLowerCase()==='v')setTool('select');
   if(event.key==='[')setBoundary('start');if(event.key===']')setBoundary('end');
@@ -358,7 +362,7 @@ function handleKey(event) {
 }
 async function initialise() {
   if(loaded.backup){const issues=validateBackup(loaded.backup);if(issues.length){state.tasks=structuredClone(SEED_TASKS);state.blocked=true;}}
-  state.tasks=state.tasks.map(upgradeReviewTask);
+  if(!cloud)state.tasks=state.tasks.map(upgradeReviewTask);
   if(!state.tasks.some(task=>task.id===state.taskId))state.taskId=state.tasks[0].id;
   state.modality=currentTask().modality;
   document.addEventListener('click',handleClick);document.addEventListener('keydown',handleKey);

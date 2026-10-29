@@ -9,7 +9,10 @@ export function createId(prefix='item') {
   return `${prefix}_${crypto.randomUUID?.() || Date.now().toString(36)+Math.random().toString(36).slice(2,8)}`;
 }
 export function downloadJson(filename,value) {
-  const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json;charset=utf-8'}));
+  downloadBlob(filename,new Blob([JSON.stringify(value,null,2)],{type:'application/json;charset=utf-8'}));
+}
+export function downloadBlob(filename,blob) {
+  const url=URL.createObjectURL(blob);
   const anchor=Object.assign(document.createElement('a'),{href:url,download:filename});
   anchor.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }

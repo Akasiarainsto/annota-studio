@@ -3,3 +3,10 @@ __pycache__/
 .DS_Store
 Thumbs.db
 docs/rea_evidence.json
+node_modules/
+.env
+.env.*
+!.env.example
+.neon/
+.server_build/
+test-results/

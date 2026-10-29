@@ -1,6 +1,9 @@
+import {getCloudContext} from './cloud-context.js';
+
 const STORE_KEY='annota_studio_v1';
 const DB_NAME='annota_media_v1';
 export function loadTasks(seedTasks) {
+  const cloud=getCloudContext();if(cloud)return {tasks:cloud.tasks,blocked:false};
   try {
     const serialized=localStorage.getItem(STORE_KEY);
     if (!serialized) return {tasks:structuredClone(seedTasks),blocked:false};
@@ -11,6 +14,7 @@ export function loadTasks(seedTasks) {
   }
 }
 export function persistTasks(tasks) {
+  const cloud=getCloudContext();if(cloud)return cloud.saveTasks(tasks);
   const snapshot=structuredClone(tasks);
   for (const task of snapshot) if (task.media.imported) task.media.url='';
   localStorage.setItem(STORE_KEY,JSON.stringify({schemaVersion:'annota/1',tasks:snapshot}));

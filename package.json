@@ -1,1 +1,38 @@
-{"name":"annota-studio-demo","version":"1.0.0","private":true,"type":"module","description":"Buildless browser-local multimodal annotation demo; no runtime dependencies."}
+{
+  "name": "annota-studio",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Multimodal annotation with optional authenticated team collaboration.",
+  "scripts": {
+    "build:cloud": "node scripts/build-cloud.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.1159.0",
+    "@aws-sdk/s3-request-presigner": "3.1159.0",
+    "@neon/functions": "0.11.0",
+    "@neondatabase/auth": "0.7.0-beta",
+    "fix-webm-duration": "1.0.6",
+    "jose": "6.2.14",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  },
+  "overrides": {
+    "better-auth": "1.7.14",
+    "zod": "4.6.7",
+    "deepmerge": "4.1.1",
+    "@better-auth/api-key": "1.7.14",
+    "@better-auth/core": "1.7.14",
+    "@better-auth/drizzle-adapter": "1.7.14",
+    "@better-auth/kysely-adapter": "1.7.14",
+    "@better-auth/memory-adapter": "1.7.14",
+    "@better-auth/mongo-adapter": "1.7.14",
+    "@better-auth/oauth-provider": "1.7.14",
+    "@better-auth/passkey": "1.7.14",
+    "@better-auth/prisma-adapter": "1.7.14",
+    "@better-auth/telemetry": "1.7.14"
+  }
+}

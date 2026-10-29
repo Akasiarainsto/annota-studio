@@ -1,0 +1,44 @@
+.team_page { min-width:320px; }
+.team_header { height:68px; display:flex; gap:20px; align-items:center; padding:0 30px; background:white; border-bottom:1px solid var(--line); }
+.team_header .brand { padding:0; width:auto; }
+.team_header > a:not(.brand) { margin-left:auto; font-size:12px; }
+.team_header #team-user { font-size:12px; }
+.team_root { max-width:1400px; margin:auto; padding:28px; }
+.team_auth { max-width:430px; margin:60px auto; padding:30px; background:white; border:1px solid var(--line); border-radius:14px; }
+.team_auth h1 { margin-bottom:10px; }
+.team_auth .field { margin-top:16px; }
+.team_auth p { color:var(--muted); font-size:13px; }
+.team_shell { display:grid; grid-template-columns:240px minmax(0,1fr); gap:24px; }
+.team_sidebar,.team_panel { background:white; border:1px solid var(--line); border-radius:12px; padding:20px; min-width:0; }
+.team_sidebar { align-self:start; }
+.team_sidebar button,.team_sidebar select { margin-top:10px; width:100%; }
+.team_toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin:16px 0; }
+.team_toolbar h1 { margin-right:auto; }
+.team_tabs { display:flex; gap:8px; border-bottom:1px solid var(--line); margin-bottom:20px; }
+.team_tabs button { padding:12px 15px; border-bottom:2px solid transparent; }
+.team_tabs button.active { color:var(--accent); border-color:var(--accent); }
+.team_cards { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:20px; }
+.team_metric { border:1px solid var(--line); border-radius:10px; padding:16px; }
+.team_metric strong { display:block; font-size:26px; margin-top:5px; }
+.team_metric small { color:var(--muted); }
+.team_table_scroll { overflow-x:auto; }
+.team_table { width:100%; border-collapse:collapse; font-size:12px; }
+.team_table th,.team_table td { padding:12px 10px; text-align:left; border-bottom:1px solid var(--line); vertical-align:middle; }
+.team_table th { color:var(--muted); font-weight:500; white-space:nowrap; }
+.team_table td select { max-width:155px; padding:5px; border:1px solid var(--line); border-radius:5px; }
+.team_table td input { width:90px; }
+.team_table a { white-space:nowrap; }
+.team_form_grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.team_panel .field input,.team_panel .field select { width:100%; }
+.team_sample { border:1px solid var(--line); padding:18px; border-radius:10px; margin-top:16px; }
+.team_sample video,.team_sample audio,.team_sample img { display:block; max-width:100%; max-height:330px; margin:12px auto; }
+.team_sample pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:300px; overflow:auto; padding:12px; background:#f7f7fb; font-size:11px; }
+.team_sample .field { margin-top:12px; }
+.team_sample textarea { width:100%; min-height:80px; }
+.team_matrix { display:grid; grid-template-columns:repeat(2,80px); gap:4px; margin:8px 0; }
+.team_matrix span { padding:8px; text-align:center; background:var(--accent_soft); }
+.team_message { position:fixed; z-index:200; bottom:24px; left:50%; transform:translateX(-50%); background:#292a40; color:white; border-radius:8px; padding:12px 22px; max-width:90vw; font-size:13px; }
+.team_error { color:var(--danger); padding:12px 0; font-size:13px; }
+.cloud_task_bar { position:fixed; bottom:0; left:305px; right:0; z-index:30; min-height:38px; background:#eff1fb; border-top:1px solid var(--line); display:flex; align-items:center; gap:12px; padding:5px 20px; font-size:11px; }
+.cloud_task_bar button { font-size:11px; padding:4px 10px; }
+@media(max-width:768px){.team_header{height:auto;min-height:64px;padding:12px 16px;gap:10px;flex-wrap:wrap}.team_root{padding:16px}.team_shell{grid-template-columns:minmax(0,1fr)}.team_sidebar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.team_sidebar h2{width:100%}.team_sidebar button,.team_sidebar select{width:auto;max-width:100%}.team_cards{grid-template-columns:repeat(2,minmax(0,1fr))}.team_form_grid{grid-template-columns:minmax(0,1fr)}.team_panel{padding:16px}.cloud_task_bar{position:static;padding:10px;flex-wrap:wrap}.team_auth{margin:24px auto;padding:22px}.team_tabs button{padding:10px;font-size:12px}}

@@ -228,6 +228,9 @@ small { font-size: 12px; }
 .issue_item { border: 1px solid #efdde3; background: #fcf5f7; color: #a65064; padding: 11px 13px; border-radius: 7px; font-size: 12px; text-align: left; }
 .issue_item small { display: block; color: #b37c8a; font: 10px Consolas, monospace; margin-top: 5px; overflow-wrap: anywhere; }
 .review_actions { display: flex; gap: 9px; padding-top: 15px; flex-wrap: wrap; }
+.clip_controls { display:flex; align-items:center; flex-wrap:wrap; gap:8px; padding:12px 16px; border-top:1px solid var(--line); font-size:11px; }
+.clip_controls select { padding:5px; background:white; border:1px solid var(--line); border-radius:5px; }
+.clip_controls small { color:var(--muted); width:100%; }
 .review_progress { background: var(--accent_soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin: 12px 0; font-weight: 600; font-size: 12px; }
 .review_progress small, .review_entry small { display: block; color: var(--muted); font-weight: 400; margin-top: 5px; }
 .review_entry { background: #f8f8fc; border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 10px; overflow-wrap: anywhere; font-size: 12px; }
