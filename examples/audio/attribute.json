@@ -1,0 +1,24 @@
+[
+  {
+    "id": "audio_attribute",
+    "source_id": "demo_meeting",
+    "audio_file": "meeting.wav",
+    "duration": 4.898,
+    "language": "中文",
+    "dialect": "模型自动猜测",
+    "scene": "普通话合成教学",
+    "kind": "speech",
+    "segments": [
+      {
+        "start": 0,
+        "end": 4.898,
+        "asr": "今天下午四点，我们在会义室开会。",
+        "text": "今天下午四点，我们在会义室开会。",
+        "speaker": "speaker_1"
+      }
+    ],
+    "noise_tags": [],
+    "is_demo": true,
+    "reference": "今天下午三点，我们在会议室开会。"
+  }
+]

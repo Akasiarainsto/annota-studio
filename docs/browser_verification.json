@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-29",
+  "checks": [
+    "audio loads actual WAV, plays and changes playback speed",
+    "audio edit persists after reload and independent CER remains 14.3%",
+    "time overflow is blocked and issues locate the field",
+    "submit, reason-required return, revise, approve, and edit invalidates approval",
+    "blank audio practice uses drag-created real time segment",
+    "image box draw, move, undo, caption and labels are editable",
+    "current annotation export excludes evaluation and temporary media URL",
+    "video creates two keyframes with interpolation between, no extrapolation outside",
+    "model scores and A/B results stay separate from annotation revisions",
+    "local media import persists in IndexedDB across reload",
+    "backup recovery preserves existing tasks and rejects malformed data",
+    "390px viewport has no document overflow in all three modes and phases",
+    "corrupted storage is protected against automatic overwrite",
+    "double-click offline entry loads all media without external requests"
+  ],
+  "errors": []
+}

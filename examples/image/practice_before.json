@@ -1,0 +1,11 @@
+[
+  {
+    "sample_id": "practice_001",
+    "image_path": "images/placeholder_a.png",
+    "tags": [
+      "插画"
+    ],
+    "split": "train",
+    "is_demo": true
+  }
+]

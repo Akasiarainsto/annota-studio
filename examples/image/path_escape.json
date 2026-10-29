@@ -1,0 +1,12 @@
+[
+  {
+    "sample_id": "path_escape",
+    "image_path": "../outside.png",
+    "caption": "模拟训练描述，用于展示字段校验，不代表占位图片内容。",
+    "tags": [
+      "插画"
+    ],
+    "split": "train",
+    "is_demo": true
+  }
+]

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-label="程序绘制教学素材：两只橙子，招牌错写春日果捕">
+<rect width="960" height="640" fill="#e6eee7"/><path d="M0 430H960V640H0Z" fill="#c4a67f"/><path d="M0 430H960" stroke="#8c755c" stroke-width="5"/>
+<rect x="280" y="70" width="400" height="145" rx="14" fill="#f9f3de" stroke="#456f59" stroke-width="6"/>
+<text x="480" y="166" text-anchor="middle" fill="#315c46" font-family="Microsoft YaHei,sans-serif" font-size="66" font-weight="700">春日果捕</text>
+<g fill="#ed8b28" stroke="#ce6d1d" stroke-width="4"><circle cx="350" cy="399" r="88"/><circle cx="610" cy="399" r="88"/></g>
+<g fill="#3e7654"><path d="M345 314Q305 257 385 283Q399 318 345 314"/><path d="M605 314Q565 257 645 283Q659 318 605 314"/></g>
+<g fill="#f5b15e"><ellipse cx="325" cy="366" rx="18" ry="25"/><ellipse cx="585" cy="366" rx="18" ry="25"/></g>
+<text x="480" y="575" text-anchor="middle" fill="#473f34" font-size="20" font-family="Microsoft YaHei,sans-serif">程序绘制教学素材 · 非模型生成结果</text></svg>

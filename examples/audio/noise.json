@@ -1,0 +1,24 @@
+[
+  {
+    "id": "audio_noise_missing",
+    "source_id": "demo_noise_missing",
+    "audio_file": "noise.wav",
+    "duration": 1.5,
+    "language": "中文",
+    "dialect": "待判定",
+    "scene": "程序生成噪声",
+    "kind": "noise",
+    "segments": [
+      {
+        "start": 0,
+        "end": 1.5,
+        "asr": "[噪声]",
+        "text": "[噪声]",
+        "speaker": "不适用"
+      }
+    ],
+    "noise_tags": [],
+    "is_demo": true,
+    "reference": ""
+  }
+]

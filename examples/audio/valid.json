@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "project": "dolphin",
+  "records": [
+    {
+      "id": "dolphin_demo_1",
+      "source_id": "demo_meeting",
+      "audio_file": "meeting.wav",
+      "duration": 4.898,
+      "language": "中文",
+      "dialect": "普通话",
+      "scene": "普通话合成教学",
+      "kind": "speech",
+      "segments": [
+        {
+          "start": 0,
+          "end": 4.898,
+          "asr": "今天下午四点，我们在会义室开会。",
+          "text": "今天下午四点，我们在会义室开会。",
+          "speaker": "speaker_1"
+        }
+      ],
+      "noise_tags": [],
+      "is_demo": true,
+      "reference": "今天下午三点，我们在会议室开会。"
+    },
+    {
+      "id": "dolphin_demo_2",
+      "source_id": "demo_weather",
+      "audio_file": "weather.wav",
+      "duration": 4.645,
+      "language": "中文",
+      "dialect": "普通话",
+      "scene": "普通话合成教学",
+      "kind": "speech",
+      "segments": [
+        {
+          "start": 0,
+          "end": 4.645,
+          "asr": "明天上午有小语，出门记得代伞。",
+          "text": "明天上午有小语，出门记得代伞。",
+          "speaker": "speaker_1"
+        }
+      ],
+      "noise_tags": [],
+      "is_demo": true,
+      "reference": "明天上午有小雨，出门记得带伞。"
+    },
+    {
+      "id": "dolphin_demo_3",
+      "source_id": "demo_noise",
+      "audio_file": "noise.wav",
+      "duration": 1.5,
+      "language": "中文",
+      "dialect": "待判定",
+      "scene": "程序生成噪声",
+      "kind": "noise",
+      "segments": [
+        {
+          "start": 0,
+          "end": 1.5,
+          "asr": "[噪声]",
+          "text": "[噪声]",
+          "speaker": "不适用"
+        }
+      ],
+      "noise_tags": [
+        "背景噪声"
+      ],
+      "is_demo": true,
+      "reference": ""
+    }
+  ]
+}

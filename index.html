@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#6757dc"><meta name="description" content="Annota 标序：音频、视频与图片的本地标注演示工作台。">
+  <title>Annota 标序 · 多模态标注工作台</title>
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app_header">
+    <a class="brand" href="./" aria-label="Annota 标序首页"><span class="brand_mark">a<span></span></span><span class="brand_text">Annota <b>标序</b></span><span class="version_tag">DEMO</span></a>
+    <nav class="phase_tabs" aria-label="工作环节"><button data-phase="annotation" class="active">数据标注</button><button data-phase="review">数据质检</button><button data-phase="evaluation">模型评测</button></nav>
+    <div class="header_actions"><span id="save-indicator" class="save_indicator">本地工作区</span><button class="button" data-action="import">导入素材</button><button class="button" data-action="export">导出</button><span class="avatar" title="本地模拟操作员">W</span></div>
+  </header>
+  <div class="app_shell">
+    <nav class="app_rail" aria-label="工作区工具"><button class="rail_button active" data-action="workspace" aria-label="标注工作区" title="标注工作区"><span data-icon="layers"></span><small>工作台</small></button><button class="rail_button" data-action="json-validate" aria-label="JSON校验" title="JSON / JSONL 标注校验"><span class="mono">{ }</span><small>JSON校验</small></button><div class="rail_spacer"></div><button class="rail_button" data-action="backup-import" title="恢复备份" aria-label="恢复备份"><span data-icon="archive"></span><small>恢复</small></button><button class="rail_button" data-action="help" title="规范与帮助" aria-label="规范与帮助"><span data-icon="help"></span><small>帮助</small></button><span class="rail_footer">V1.0</span></nav>
+    <aside class="task_sidebar"><div class="sidebar_heading"><div><small>WORKSPACE</small><h2>多模态数据集</h2></div><span class="pill">本地</span></div><div class="modality_switch" aria-label="媒体类型"><button data-modality="audio" class="active">音频</button><button data-modality="video">视频</button><button data-modality="image">图片</button></div><label class="search_field"><span data-icon="search"></span><input id="task-search" placeholder="搜索任务或编号" aria-label="搜索任务"></label><div class="task_filters"><span id="queue-count">任务队列</span><select id="status-filter" aria-label="状态筛选"><option value="all">全部状态</option><option value="draft">草稿</option><option value="pending">待质检</option><option value="returned">已退回</option><option value="approved">已验收</option></select></div><div id="task-list" class="task_list"></div><div class="queue_footer"><button class="button" data-action="blank">＋ 空白标注练习</button><small>预置样例均为模拟数据</small></div></aside>
+    <main id="workspace" class="workspace" aria-label="当前任务工作台"></main>
+  </div>
+  <footer class="app_footer"><span><i class="status_dot status_approved"></i>浏览器本地演示 <span class="footer_separator">/</span> <span id="project-footnote">Dolphin 语音场景</span></span><span id="keyboard-hint">空格 播放 / 暂停 <span class="footer_separator">·</span> Ctrl S 保存 <span class="footer_separator">·</span> ? 帮助</span></footer>
+  <dialog id="modal" class="modal"><div class="modal_header"><h2 id="modal-title"></h2><button class="icon_button" data-action="close-modal" aria-label="关闭弹窗">×</button></div><div id="modal-body" class="modal_body"></div><div id="modal-actions" class="modal_actions"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <input id="media-import" type="file" accept="audio/*,video/*,image/*" multiple hidden>
+  <input id="backup-import" type="file" accept=".json,application/json" hidden>
+  <script type="module" src="src/app.js"></script>
+</body></html>

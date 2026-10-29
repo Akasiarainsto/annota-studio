@@ -1,0 +1,71 @@
+[
+  {
+    "sample_id": "video_time_out",
+    "video_path": "videos/video_time_out.webm",
+    "duration": 4,
+    "segments": [
+      {
+        "start": 0,
+        "end": 4,
+        "captions": [
+          "一个带浅色条纹的蓝色球体（模拟描述）。",
+          "球体从左向右连续滚动。",
+          "固定镜头，无可观察运镜。",
+          "背景均匀明亮，具体光源不可判断。",
+          "球体沿水平地面滚动。",
+          "程序绘制质感，真实材质不可判断。",
+          "球体底部与地面接触，没有其他可见主体。"
+        ],
+        "overlap_reason": ""
+      }
+    ],
+    "split": "train",
+    "is_demo": true
+  },
+  {
+    "sample_id": "video_reversed",
+    "video_path": "videos/video_reversed.webm",
+    "duration": 4,
+    "segments": [
+      {
+        "start": 1,
+        "end": 3,
+        "captions": [
+          "一个带浅色条纹的蓝色球体（模拟描述）。",
+          "球体从左向右连续滚动。",
+          "固定镜头，无可观察运镜。",
+          "背景均匀明亮，具体光源不可判断。",
+          "球体沿水平地面滚动。",
+          "程序绘制质感，真实材质不可判断。",
+          "球体底部与地面接触，没有其他可见主体。"
+        ],
+        "overlap_reason": ""
+      }
+    ],
+    "split": "train",
+    "is_demo": true
+  },
+  {
+    "sample_id": "video_missing",
+    "video_path": "videos/video_missing.webm",
+    "duration": 4,
+    "segments": [
+      {
+        "start": 0,
+        "end": 2,
+        "captions": [
+          "一个带浅色条纹的蓝色球体（模拟描述）。",
+          "球体从左向右连续滚动（补齐的模拟描述）。",
+          "固定镜头，无可观察运镜。",
+          "背景均匀明亮，具体光源不可判断。",
+          "球体沿水平地面滚动。",
+          "程序绘制质感，真实材质不可判断。",
+          "球体底部与地面接触，没有其他可见主体。"
+        ],
+        "overlap_reason": ""
+      }
+    ],
+    "split": "train",
+    "is_demo": true
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "sample_id": "tag_error",
+    "image_path": "images/placeholder_a.png",
+    "caption": "模拟训练描述，用于展示字段校验，不代表占位图片内容。",
+    "tags": [
+      "插画",
+      "插画",
+      "未知标签"
+    ],
+    "split": "train",
+    "is_demo": true
+  }
+]

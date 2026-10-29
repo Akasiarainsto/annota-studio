@@ -1,0 +1,10 @@
+[
+  {
+    "sample_id": "practice_001",
+    "image_path": "images/placeholder_a.png",
+    "caption": "模拟训练描述，用于练习补齐字段；不代表占位图片的语义。",
+    "tags": ["插画"],
+    "split": "train",
+    "is_demo": true
+  }
+]

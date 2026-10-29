@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-29",
+  "version": 2,
+  "checks": [
+    "validator follows the active audio task and displays the Dolphin training schema",
+    "audio cases distinguish timing, transcript, speaker, noise, overlap and dialect",
+    "audio edit, exact problem location, recheck and corrected five-record example work",
+    "video has a distinct seven-caption schema and explicit overlap reasoning",
+    "image schema checks Caption, labels, paths and actual loaded file inventory",
+    "selecting a real image directory changes scope and invalidates old results",
+    "JSONL import continues after a syntax error and identifies physical lines",
+    "CSV, report and edited-data downloads are modality-specific and current",
+    "wrong modality is rejected, independent drafts survive switching, and tasks remain unchanged",
+    "all modality views remain usable at 390px and cleanup restores the regular dialog",
+    "live required-field feedback saves drafts but blocks submission and approval",
+    "video time order is checked immediately and prevents the status transition"
+  ],
+  "errors": []
+}

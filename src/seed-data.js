@@ -1,0 +1,19 @@
+import { AUDIO_PEAKS } from './audio-peaks.js';
+export const PROJECTS={audio:{name:'Dolphin',description:'语音转写与属性标注',short:'听清每一句，留下准确答案',labels:['Speech','Noise']},video:{name:'Seedance',description:'视频分段与动态标注',short:'把连续画面，拆成可理解的片段',labels:['小球','事件','主体']},image:{name:'Seedream',description:'图文描述与区域标注',short:'让每一个对象，都有清晰的描述',labels:['笔记本电脑','桌面','橙子','招牌','主体']}};
+export const VIDEO_FIELDS={subject:'主体',action:'动作时序',camera:'运镜',lighting:'光影',physics:'物理动态',material:'材质',interaction:'交互'};
+function makeTask(options) {
+  return {id:options.id,modality:options.modality,title:options.title,split:'train',caption:'',tags:[],segments:[],regions:[],tracks:[],revision:1,status:'draft',reviews:[],evaluation:{asrOriginal:'',reference:'',ratings:{},outcome:'',notes:''},updatedAt:null,isDemo:true,...options};
+}
+function speechSegment(id,start,end,text) {
+  return {id,start,end,text,speaker:'说话人 1',language:'普通话',dialect:'普通话（合成）',scene:'会议',mixed:false,label:'Speech'};
+}
+const videoDescription={subject:'一个蓝色小球位于桌面。',action:'小球从左向右连续移动。',camera:'固定镜头，平视构图。',lighting:'均匀的柔和光照。',physics:'运动连续，没有明显位置跳变。',material:'小球表面光滑，桌面平整。',interaction:'小球沿桌面移动，无其他主体交互。'};
+export const SEED_TASKS=[
+  makeTask({id:'DOL-001',modality:'audio',title:'会议通知 · 普通话',media:{name:'meeting.wav',url:'assets/meeting.wav',duration:4.898503,width:0,height:0,source:'本机合成普通话教学音频；非真实方言/客户数据',peaks:AUDIO_PEAKS.meeting,imported:false},segments:[speechSegment('seg_meeting_1',0,2.35,'今天下午三点，'),speechSegment('seg_meeting_2',2.35,4.898,'我们在会议室开会。')],tags:['会议','单说话人'],evaluation:{asrOriginal:'今天下午四点，我们在会义室开会。',reference:'今天下午三点，我们在会议室开会。',ratings:{},outcome:'',notes:'人为构造的两处替换错误，用于演示CER，不是真实模型结果。'}}),
+  makeTask({id:'DOL-002',modality:'audio',title:'出行提醒 · 普通话',media:{name:'weather.wav',url:'assets/weather.wav',duration:4.645215,width:0,height:0,source:'本机合成普通话教学音频；非真实客户数据',peaks:AUDIO_PEAKS.weather,imported:false},segments:[],tags:['生活提醒']}),
+  makeTask({id:'DOL-003',modality:'audio',title:'背景噪声 · 非语音',media:{name:'noise.wav',url:'assets/noise.wav',duration:1.5,width:0,height:0,source:'程序生成教学噪声',peaks:AUDIO_PEAKS.noise,imported:false},segments:[{id:'seg_noise',start:0,end:1.5,label:'Noise',text:'[噪声]',speaker:'不适用',language:'非语音',dialect:'待判定',scene:'噪声',mixed:false}],noiseTags:['背景噪声'],tags:['噪声']}),
+  makeTask({id:'SDA-001',modality:'video',title:'小球运动 · 连续动态',media:{name:'motion_good.webm',url:'assets/motion_good.webm',duration:3.959089,width:960,height:540,source:'程序绘制的教学动画；非真实模型生成结果',imported:false},segments:[{id:'seg_motion',start:0,end:3.9,label:'运动',text:'蓝色小球沿桌面连续移动',description:videoDescription}],tags:['固定镜头','物理动态'],evaluation:{asrOriginal:'',reference:'',ratings:{},outcome:'',notes:'A为连续动画，B人为构造运动不连贯；仅作模型输出评测流程模拟。',comparisonUrl:'assets/motion_bad.webm',prompt:'固定镜头下，一个蓝色小球沿桌面连续从左向右移动。'}}),
+  makeTask({id:'SDA-002',modality:'video',title:'运动异常 · 错例定位',media:{name:'motion_bad.webm',url:'assets/motion_bad.webm',duration:3.959089,width:960,height:540,source:'程序构造运动错例；非真实模型结果',imported:false},segments:[],tags:[]}),
+  makeTask({id:'SDR-001',modality:'image',title:'工作空间 · 图文描述',media:{name:'workspace.jpg',url:'assets/workspace.jpg',duration:0,width:1600,height:1067,source:'Unsplash公开摄影：photo-1496181133206-80ce9b88a853；演示任务为模拟',imported:false},caption:'一台打开的银色笔记本电脑放在木质桌面中央，屏幕为黑色。电脑左侧是金属收纳盒，右侧有几何摆件和白盆绿植，背景是浅色墙面。正面视角，环境光柔和。',tags:['办公','静物','摄影'],regions:[{id:'region_laptop',label:'笔记本电脑',x:0.28,y:0.263,width:0.44,height:0.52}]}),
+  makeTask({id:'SDR-002',modality:'image',title:'春日果铺 · 数量与文字',media:{name:'image_good.svg',url:'assets/image_good.svg',duration:0,width:960,height:640,source:'程序绘制教学素材，非模型生成；3只橙子和招牌文字用于人工核对',imported:false},caption:'三只橙子排列在桌面上，后方招牌写着“春日果铺”。',tags:['插画','水果'],evaluation:{asrOriginal:'',reference:'',ratings:{},outcome:'',notes:'B为人为构造的2只橙子及错字，不是实际模型生成。',comparisonUrl:'assets/image_bad.svg',prompt:'绘制三只橙子，后方招牌准确写着“春日果铺”。'}})
+];
