@@ -5,19 +5,19 @@
       "path": "index.html",
       "status": 200,
       "sourceMatches": true,
-      "sha256": "3472e61ba2172d5868830c13393911b298c57a1f63d65f870f969c53f67d7ada"
+      "sha256": "3e5aebdde8d084dc9f21c993210645b0a19d6abba423f3a9d2cd2e3e2173ed33"
     },
     {
       "path": "styles.css",
       "status": 200,
       "sourceMatches": true,
-      "sha256": "964f0dd17925b021eeba5fc78aac26e9374408ace07c5124ed5d5165dfc2460f"
+      "sha256": "f1a7513e85a01bd09be60464e707988c7b66b33ca9384fefb2df908caba85dd8"
     },
     {
       "path": "src/app.js",
       "status": 200,
       "sourceMatches": true,
-      "sha256": "cf36acf8bca3f6037d598ddf00dffb9632322bef8a05e0c84e16ddbee422088b"
+      "sha256": "16464006b46208b93835be8eaa57f3ca3bf8a1a97314e6a94bc363a000779d49"
     },
     {
       "path": "src/audio-peaks.js",
@@ -29,7 +29,7 @@
       "path": "src/core.js",
       "status": 200,
       "sourceMatches": true,
-      "sha256": "c627c3c18d9bf89a3811543f9876a997c2ec09a3781965979d1559426dd15677"
+      "sha256": "c41a929c49374c96779f535bce155faafa3202e696901421a0bf08400dcc95c8"
     },
     {
       "path": "src/icons.js",
@@ -47,7 +47,7 @@
       "path": "src/json-validation.js",
       "status": 200,
       "sourceMatches": true,
-      "sha256": "e2e20f9fa5e89558e7f4519dd58de8ca6a41c7a3c5c56a5375e5cb91f35ae945"
+      "sha256": "38e3b519b917ef86c3cb002cd476239f68742eba04ee2ce9f1fac185d6c7b170"
     },
     {
       "path": "src/json-validator.js",
@@ -60,6 +60,18 @@
       "status": 200,
       "sourceMatches": true,
       "sha256": "5f68e95ab16621d6287da3ce21157c86059dc6ce527acee16b02b17f49af4b82"
+    },
+    {
+      "path": "src/review-view.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "55eb938d8e95c12f9c87bff2afd6e41478dd5679a053660f2177682af8d55a1b"
+    },
+    {
+      "path": "src/review-workflow.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "48d8866063b06b4efc3a0841361695324f1720631fe57762737d31a54c66b556"
     },
     {
       "path": "src/seed-data.js",
@@ -122,10 +134,16 @@
       "sha256": "e536eb8d80e36b638c5fd73ab7f5508eba0ea1fcfe1b64a926fffd6150024a39"
     },
     {
+      "path": "src/video-comparison.js",
+      "status": 200,
+      "sourceMatches": true,
+      "sha256": "ef64dad029442acca611bbdfcbcc1f72757a2bc6bce4aa6f1de855ae827cb6d3"
+    },
+    {
       "path": "src/views.js",
       "status": 200,
       "sourceMatches": true,
-      "sha256": "6f0b63fafdcd46142dcb767860a44b64e018eec3ca3d0dcd5ca79b603fc1140e"
+      "sha256": "80b8e955920aa4b31bba87d29bca35f0e8018e1c370af0ca212c89df02d53ab5"
     }
   ],
   "mediaRangeChecks": [

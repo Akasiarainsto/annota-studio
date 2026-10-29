@@ -1,0 +1,15 @@
+{
+  "url": "https://akasiarainsto.github.io/annota-studio/",
+  "checkedAt": "2026-10-29T14:43:43.209Z",
+  "checks": [
+    "first opinion persists while missing evidence and duplicate reviewer cannot approve",
+    "edit, undo, return and resubmit keep history while starting fresh review rounds",
+    "dispute survives reload, blocks resubmission and completes reasoned arbitration",
+    "video and image both require two reviewers and backup preserves complete histories",
+    "legacy approvals remain readable without fabricated two-person evidence",
+    "real A/B videos play, pause, seek, restart and change speed together without changing annotation",
+    "drift correction, buffering, shorter duration and leaving the page stop or synchronize both players",
+    "pair loading errors disable joint controls and both features fit a 390px viewport"
+  ],
+  "errors": []
+}
