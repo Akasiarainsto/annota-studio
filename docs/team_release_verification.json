@@ -1,6 +1,9 @@
 {
-  "time": "2026-10-30T00:14:15.856Z",
+  "time": "2026-10-30T00:19:03.182Z",
   "environment": "main-trial",
+  "publicUrl": "https://akasiarainsto.github.io/annota-studio/team.html",
+  "applicationCommit": "0b7e260805852da4fd927bc6e70c007e76c03b89",
+  "pagesRun": "https://github.com/Akasiarainsto/annota-studio/actions/runs/40978471583",
   "health": {
     "ok": true,
     "service": "annota-team",
@@ -10,6 +13,7 @@
     "auth": true,
     "storage": true
   },
+  "publicRuntimeFilesChecked": 37,
   "checks": [
     "main branch signup uses real authenticated account",
     "project and simulated task created through UI",
@@ -22,7 +26,13 @@
     "owner changes actual member role through UI",
     "changed role immediately enforced by API",
     "final backend rejects malformed nested task as client error",
-    "deployed source fingerprint matches final bundle"
+    "deployed source fingerprint matches final bundle",
+    "public GitHub team page signs in real account",
+    "public origin restores session after reload",
+    "public page uploads actual private media",
+    "public team layout fits 390px",
+    "all public top-level runtime files match published source",
+    "public stock audio exports and decodes real 3 second WAV"
   ],
   "errors": []
 }

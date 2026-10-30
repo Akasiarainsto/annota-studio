@@ -1,0 +1,32 @@
+{
+  "time": "2026-10-30T00:18:21.314Z",
+  "baseUrl": "https://akasiarainsto.github.io/annota-studio/",
+  "checks": [
+    "3/5/10-second video exports decode with non-silent audio",
+    "3/5/10-second WAV exports contain the expected PCM samples",
+    "cancellation rejects rather than returning a partial successful file",
+    "unsupported video recording gives an actionable browser error",
+    "quick clip creates aligned timestamps and UI downloads a real WAV"
+  ],
+  "videoResults": [
+    {
+      "seconds": 3,
+      "duration": 3.0061,
+      "rms": 0.14168886189818639,
+      "bytes": 65103
+    },
+    {
+      "seconds": 5,
+      "duration": 5.019599,
+      "rms": 0.1417455449277161,
+      "bytes": 109639
+    },
+    {
+      "seconds": 10,
+      "duration": 10.023399,
+      "rms": 0.14180070045630896,
+      "bytes": 220547
+    }
+  ],
+  "errors": []
+}
