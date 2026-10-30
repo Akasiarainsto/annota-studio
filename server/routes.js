@@ -1,6 +1,7 @@
 import {readJson,requireCondition} from './http.js';
 import {listProjects,createProject,listMembers,createInvite,joinProject,changeRole,getDashboard} from './project-service.js';
-import {listTasks,readTask,createTask,saveTask,assignTask,submitTask,recordSession} from './task-service.js';
+import {listTasks,readTask,createTask,saveTask,assignTask,submitTask} from './task-service.js';
+import {recordSession} from './session-service.js';
 import {listBatches,readBatch,createBatch,voteSample,arbitrateSample} from './quality-service.js';
 import {uploadMedia,readMedia} from './media-service.js';
 

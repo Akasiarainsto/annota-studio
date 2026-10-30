@@ -26,6 +26,7 @@ async function renderContent() {
 async function refresh() {
   const generation=++state.generation;const projects=await teamRequest('projects');if(generation!==state.generation)return;
   state.projects=projects;state.project=projects.find(project=>project.id===state.projectId)||projects[0]||null;state.projectId=state.project?.id||'';
+  if(!['tasks','quality','dashboard'].includes(state.tab)||(state.tab==='dashboard'&&!['owner','manager'].includes(state.project?.role)))state.tab='tasks';
   if(state.project){
     const [members,tasks,batches]=await Promise.all([teamRequest(`projects/${state.projectId}/members`),teamRequest(`projects/${state.projectId}/tasks`),teamRequest(`projects/${state.projectId}/batches`)]);if(generation!==state.generation)return;
     Object.assign(state,{members,tasks,batches});
@@ -57,6 +58,7 @@ async function handleAction(button) {
   if(action==='upload')root.querySelector('#team-upload').click();
   if(action==='assign')await assignTask(button.dataset.id);
   if(action==='invite')await createInvite();
+  if(action==='member-role'){await teamRequest(`projects/${state.projectId}/members/${button.dataset.id}`,{method:'PATCH',body:{role:root.querySelector(`[data-member-role="${button.dataset.id}"]`).value}});message('成员角色已更新');await refresh();}
   if(action==='export-batch')downloadJson(`quality_batch_${state.batchId}.json`,{schemaVersion:'annota-qc/1',exportedAt:new Date().toISOString(),...state.batch});
   if(action==='review-timer-start')await state.timer.start();
   if(action==='review-timer-stop')await state.timer.stop();
@@ -78,12 +80,19 @@ async function handleChange(element) {
   if(element.id==='team-upload'&&element.files.length)await uploadFiles([...element.files]);
 }
 async function guard(operation) {try{await operation();}catch(error){message(error.message);const inline=root.querySelector('#auth-error');if(inline)inline.textContent=error.message;}}
+async function submitOnce(form) {
+  if(form.dataset.pending)return;form.dataset.pending='true';
+  const buttons=[...form.querySelectorAll('button')];for(const button of buttons)button.disabled=true;
+  const submit=form.querySelector('[type="submit"]'),label=submit?.textContent;if(submit)submit.textContent='正在处理…';
+  try{await handleSubmit(form);}finally{delete form.dataset.pending;for(const button of buttons)button.disabled=false;if(submit)submit.textContent=label;}
+}
 root.addEventListener('click',event=>{const button=event.target.closest('button');if(!button)return;if(button.dataset.teamTab){state.tab=button.dataset.teamTab;void guard(refresh);}else if(button.dataset.teamSample){state.sampleId=button.dataset.teamSample;void guard(renderContent);}else if(button.dataset.teamAction)void guard(()=>handleAction(button));});
-root.addEventListener('submit',event=>{event.preventDefault();if(event.target.reportValidity())void guard(()=>handleSubmit(event.target));});
+root.addEventListener('submit',event=>{event.preventDefault();if(event.target.reportValidity())void guard(()=>submitOnce(event.target));});
 root.addEventListener('change',event=>void guard(()=>handleChange(event.target)));
-root.addEventListener('input',event=>{if(event.target.id==='task-search-team'){state.search=event.target.value;root.querySelector('#team-task-rows').innerHTML=views.refreshTaskRows(state);}});
+root.addEventListener('input',event=>{if(event.target.form)event.target.form.dataset.dirty='true';if(event.target.id==='task-search-team'){state.search=event.target.value;root.querySelector('#team-task-rows').innerHTML=views.refreshTaskRows(state);}});
+root.addEventListener('change',event=>{if(event.target.form)event.target.form.dataset.dirty='true';});
 document.querySelector('#team-signout').addEventListener('click',()=>void guard(async()=>{await releaseSample();await signOutTeam();location.reload();}));
 document.addEventListener('visibilitychange',()=>{if(document.hidden)void guard(()=>state.timer?.stop());});
-window.addEventListener('pagehide',()=>void state.timer?.stop());
-setInterval(()=>{if(state.user&&state.project&&!state.timer?.active&&!document.hidden&&!document.activeElement?.matches('input,textarea,select')&&!root.querySelector('#vote-note')?.value)void guard(refresh);},15000);
-await guard(async()=>{const session=await getTeamSession();if(!session?.user){root.innerHTML=views.authView();return;}state.user=session.user;document.querySelector('#team-user').textContent=session.user.name;document.querySelector('#team-signout').hidden=false;await refresh();});
+window.addEventListener('pagehide',()=>void guard(()=>state.timer?.stop()));
+setInterval(()=>{if(state.user&&state.project&&!state.timer?.active&&!document.hidden&&!document.activeElement?.matches('input,textarea,select')&&!root.querySelector('form[data-dirty="true"],form[data-pending]'))void guard(refresh);},15000);
+await guard(async()=>{try{const session=await getTeamSession();if(!session?.user){root.innerHTML=views.authView();return;}state.user=session.user;document.querySelector('#team-user').textContent=session.user.name;document.querySelector('#team-signout').hidden=false;await refresh();}catch(error){root.innerHTML=views.authView();throw error;}});

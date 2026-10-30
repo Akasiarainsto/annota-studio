@@ -21,7 +21,8 @@ async function openTask() {
   const status=bar.querySelector('#cloud-timer-state');const timer=createTeamTimer({taskId:id,onUpdate:record=>{status.textContent=record.active?'计时中 · 每 20 秒同步':'计时已暂停';},onError:text=>{status.textContent=text;}});
   bar.querySelector('#cloud-timer-start').addEventListener('click',async()=>{try{await timer.start();}catch(error){status.textContent=error.message;}});bar.querySelector('#cloud-timer-stop').addEventListener('click',async()=>{try{await timer.stop();}catch(error){status.textContent=error.message;}});
   bar.querySelector('#cloud-reload').addEventListener('click',()=>location.reload());
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)void timer.stop();});window.addEventListener('pagehide',()=>{void timer.stop();if(mediaUrl)URL.revokeObjectURL(mediaUrl);});
+  const stopTimer=async()=>{try{await timer.stop();}catch(error){status.textContent=error.message;}};
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)void stopTimer();});window.addEventListener('pagehide',()=>{void stopTimer();if(mediaUrl)URL.revokeObjectURL(mediaUrl);});
   await import('./app.js');
 }
 try{await openTask();}catch(error){document.querySelector('#workspace').innerHTML=`<div class="notice error">${esc(error.message)} <a href="team.html">返回团队工作区</a></div>`;}

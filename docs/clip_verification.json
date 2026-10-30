@@ -1,0 +1,32 @@
+{
+  "time": "2026-10-30T00:06:26.988Z",
+  "baseUrl": "http://127.0.0.1:8768/",
+  "checks": [
+    "3/5/10-second video exports decode with non-silent audio",
+    "3/5/10-second WAV exports contain the expected PCM samples",
+    "cancellation rejects rather than returning a partial successful file",
+    "unsupported video recording gives an actionable browser error",
+    "quick clip creates aligned timestamps and UI downloads a real WAV"
+  ],
+  "videoResults": [
+    {
+      "seconds": 3,
+      "duration": 3.000799,
+      "rms": 0.14129318900591228,
+      "bytes": 65411
+    },
+    {
+      "seconds": 5,
+      "duration": 5.007199,
+      "rms": 0.14133431976720184,
+      "bytes": 109318
+    },
+    {
+      "seconds": 10,
+      "duration": 10.015699,
+      "rms": 0.14139869909039998,
+      "bytes": 221185
+    }
+  ],
+  "errors": []
+}

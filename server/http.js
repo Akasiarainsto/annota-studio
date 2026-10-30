@@ -1,9 +1,12 @@
 export function requireCondition(condition,status,message) {
   if(!condition)throw Object.assign(new Error(message),{status});
 }
+export function requireObject(value,label='JSON') {
+  requireCondition(value&&typeof value==='object'&&!Array.isArray(value),400,`${label}必须为对象`);return value;
+}
 export async function readJson(request) {
   const buffer=await readBytes(request,2*1024*1024);
-  try{const result=JSON.parse(new TextDecoder().decode(buffer));requireCondition(result&&typeof result==='object'&&!Array.isArray(result),400,'需要 JSON 对象');return result;}
+  try{return requireObject(JSON.parse(new TextDecoder().decode(buffer)));}
   catch {throw Object.assign(new Error('请求不是有效 JSON'),{status:400});}
 }
 export async function readBytes(request,limit) {

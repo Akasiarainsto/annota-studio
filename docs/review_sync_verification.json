@@ -1,6 +1,6 @@
 {
   "url": "http://127.0.0.1:8768/",
-  "checkedAt": "2026-10-29T17:36:14.785Z",
+  "checkedAt": "2026-10-30T00:05:08.320Z",
   "checks": [
     "first opinion persists while missing evidence and duplicate reviewer cannot approve",
     "edit, undo, return and resubmit keep history while starting fresh review rounds",

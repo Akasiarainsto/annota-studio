@@ -38,7 +38,7 @@ export async function getDashboard(userId,options) {
   await requireMember(userId,options.projectId,{roles:MANAGERS});
   const members=await listMembers(userId,options.projectId);
   const tasks=await query(`SELECT id,assignee_id,submitted_by,modality,status,submission_count,return_count FROM annota.tasks WHERE project_id=$1 AND ($2='all' OR modality=$2)`,[options.projectId,options.modality||'all']);
-  const sessions=await query('SELECT s.user_id,s.task_id,s.seconds,s.work_type FROM annota.sessions s JOIN annota.tasks t ON t.id=s.task_id WHERE t.project_id=$1 AND s.ended_at IS NOT NULL',[options.projectId]);
+  const sessions=await query(`SELECT s.user_id,s.task_id,s.seconds+CASE WHEN s.ended_at IS NULL THEN GREATEST(0,LEAST(60,EXTRACT(EPOCH FROM now()-s.heartbeat_at))) ELSE 0 END AS seconds,s.work_type FROM annota.sessions s JOIN annota.tasks t ON t.id=s.task_id WHERE t.project_id=$1`,[options.projectId]);
   const events=await query('SELECT e.task_id,e.actor_id,e.kind,e.meta FROM annota.events e JOIN annota.tasks t ON t.id=e.task_id WHERE t.project_id=$1',[options.projectId]);
   const votes=await query('SELECT v.reviewer_id,s.task_id FROM annota.votes v JOIN annota.samples s ON s.id=v.sample_id JOIN annota.tasks t ON t.id=s.task_id WHERE t.project_id=$1',[options.projectId]);
   return {people:summarizePeople({members,tasks,sessions,events,votes}),counts:Object.fromEntries(['draft','pending','approved','returned','disputed'].map(status=>[status,tasks.filter(task=>task.status===status).length])),total:tasks.length};

@@ -1,62 +1,61 @@
 # Annota 标序
 
-面向音频、视频与图片标注的纯前端本地演示工作台。视觉采用白灰底、紫蓝强调与深色媒体画布；所有样例场景均为模拟，任务来自用户简历的工作类型，不是原项目的实际客户数据。
+音频、视频、图片标注工作台，包含本地演示和真实账号的团队协作试用版。保留白灰底、紫蓝强调和深色媒体画布。预置场景模拟 Dolphin 语音、Seedance 视频、Seedream 图文作业，不包含用户以往项目的客户数据。
 
-在线演示：<https://akasiarainsto.github.io/annota-studio/>  
-源码仓库：<https://github.com/Akasiarainsto/annota-studio>
+- 在线工作台：https://akasiarainsto.github.io/annota-studio/
+- 团队协作：https://akasiarainsto.github.io/annota-studio/team.html
+- 源码：https://github.com/Akasiarainsto/annota-studio
 
-## 直接使用
+## 两种使用方式
 
-解压整个文件夹，双击 **打开演示.html**。不需要联网、账户、API Key、npm 或框架。保留旁边的 assets 文件夹。
+本地工作台：打开网站首页，或解压完整交付包后双击 `打开演示.html`，保留 `assets/`。运行离线版不需要 Node、账户或网络。草稿存 localStorage `annota_studio_v1`，导入媒体存 IndexedDB `annota_media_v1`；不会自动上传团队项目。清理浏览器数据会删除本地内容，JSON 备份不含媒体二进制。
 
-`index.html` 是模块化源入口，用于 HTTP 预览及后续 GitHub Pages。开发验证时运行 `python tests/preview_server.py 8768`，打开 http://127.0.0.1:8768/ 。该服务器支持 HTTP Range；缺少 Range 的服务器可能导致音视频无法跳转。
+团队协作试用：打开 `team.html`，注册邮箱和密码、创建项目。负责人在“项目看板”生成单次加入码并指定角色；成员用独立账号登录后输入加入码。项目、媒体、任务、独立复核和计时保存在服务端，显示姓名不作为权限凭据。操作和统计口径详见 [团队协作使用说明](docs/团队协作使用说明.md)。
+
+当前未开启邮箱归属验证，也未提供找回密码页面；认证服务仍采用共享发信配置。正式业务使用前需配置自己的 SMTP 并完成邮件验证/找回密码流程，不能将试用版称作已完成生产邮件体系。见 [Neon Auth 上线要求](https://neon.com/docs/auth/production-checklist)。
 
 ## 已实现
 
-- 音频：真实幅度波形、拖选分段、逐段试听、倍速/循环、转写和说话人/语种/方言/场景属性。
-- 视频：时间分段、七项 Dense Caption、归一坐标目标框关键帧与线性插值。1/30秒是演示步进，不代表视频真实帧率。
-- 视频模型评测：左右 A/B 共用播放、暂停、从头播放、进度和倍速；自动校正明显时间漂移，任一侧缓冲或出错时一起暂停，按较短媒体时长结束，离开页面停止两侧。
-- 图片：Caption、内容标签、框选、选择移动、坐标调整、删除和撤销。
-- 共用：空白练习、媒体导入、本地草稿、提交、带理由退回、逐项验收、标注/评测分开导出、工作区JSON备份与恢复。
-- 双人复核：首位记录独立意见，另一姓名确认后验收；支持退回、分歧与仲裁，每次重提开启新周期。姓名、意见、周期、修订和时间随备份保存；旧版单次复核记录保留并明确标识。详见 `docs/双人复核与双视频同步.md`。
-- 分模态 JSON 校验：Dolphin 音频、Seedance 视频、Seedream 图片分别使用原对话对应的字段契约、规则与演示数据；提供 25 个专项案例、原文行列定位、修改复检、文本/问题 CSV/报告 JSON 下载。图片可选择根目录核对文件清单，校验不写入任务库。详见 `docs/分模态JSON校验与即时拦截.md`。
-- 即时校验与流程拦截：编辑时提示必填项、枚举、时间及坐标问题；允许保存未完成草稿，提交质检与验收时复用对应规则，不合格任务不能进入下一状态。
-- 三个独立环节：数据标注=制作数据，数据质检=检查人工记录，模型评测=判断原始模型输出。CER只使用独立参考稿与未改写的ASR原稿。
+- 音频：真实波形、拖选/调整分段、逐段试听、倍速/循环、转写和说话人/语种/方言/场景属性。音文对齐指人工时间片段与文字对应，不含自动 ASR 或强制对齐模型。
+- 视频：时间分段、七项 Dense Caption、目标框关键帧与线性插值。模型评测保留 A/B 同步播放、暂停、跳转、倍速、漂移校正、缓冲和离页销毁。
+- 图片：Caption、标签、目标框、移动、坐标调整、删除和撤销。
+- 音视频：一键创建 3–10 秒整数长度片段，尾部不足时拒绝截短；音频重叠先提示处理。导出真实 PCM WAV / WebM 文件。视频按播放速度重编码，需保持页面前台；取消或切入后台中止编码。视频不承诺帧级精确。推荐新版 Edge/Chrome。双击文件版导出随包媒体时需重新选择同名原文件，本地导入和云端 Blob 可以直接读取；文件名一致不能证明内容完全相同。
+- 分模态 JSON/JSONL：三个字段契约、25 个专项案例、原文行列定位、修改复检、CSV/JSON 报告、图片文件清单核对。编辑即时检查，提交前前端与服务端复用规则。草稿允许不完整，不合格数据禁止提交。
+- 团队项目：真实账号和角色、单次加入码、任务分配、难度设置、私有媒体、跨设备保存、乐观版本冲突保护。单文件最大 100 MB。
+- 分层质检：按媒体/难度/负责人抽样，冻结修订、提交周期、随机种子和清单；两位真实账号独立判断。齐备前隐藏对方意见，双通过验收、双不合格自动退回、分歧交由非自提的管理者仲裁。过期修订不能继续投票。
+- Kappa：显示有效配对数、Po、Pe、混淆矩阵和 κ=(Po−Pe)/(1−Pe)，无样本或 Pe=1 时明确不可计算。仲裁不改写原始判断。
+- 项目看板：分配、进度、工时、标注/复核人效、返工率，按媒体筛选；数据来自服务端实际提交、复核和计时。短时试用折算值不代表稳定人效。
+- 三个环节分开：标注制作数据、质检检查人工记录、模型评测判断原始输出。CER 只使用未改写 ASR 和独立参考。
 
-## 本地数据
+## 架构与开发
 
-结构化草稿存 localStorage，键为 `annota_studio_v1`；媒体存 IndexedDB `annota_media_v1`。不会覆盖旧工作台存储。清理浏览器数据会删除这些本地内容。JSON备份不含媒体二进制文件，跨设备需重新关联原媒体。恢复遇到同ID会创建副本，不覆盖当前任务。
+前端为 HTML/CSS/原生 JavaScript，GitHub Pages 提供页面。团队 API 使用 Neon Function、托管认证、Postgres 与私有 S3。开发和线上试用采用独立数据库分支与 Auth URL；开发验收账号不迁移。浏览器只存公开服务 URL，数据库/存储凭据由服务端环境注入。
 
-## 结构
+入口：`index.html` 本地工作台；`team.html` 项目/抽检/看板；`team_task.html` 云端任务。`src/operations-core.js` 管抽样和统计；`src/cloud-task-store.js` 管保存队列和版本；`server/*-service.js` 按项目、任务、质检、计时、媒体划分；`server/schema.sql` 为幂等建表脚本。
 
-- `src/core.js`：纯业务规则、CER、轨迹插值、审核失效和标注快照。
-- `src/review-workflow.js` / `src/review-view.js`：双人复核状态机、备份审计和复核界面；`src/video-comparison.js`：双视频播放与生命周期控制。
-- `src/validation_rules/`：独立的音频、视频、图片规则与共用基础检查；`src/validation-adapters.js` 将工作台任务转换成对应训练格式。
-- `src/json-validation.js` / `src/json-parser.js`：格式解析、问题定位与分模态校验入口；`src/json-validator.js` 管理文件校验界面，`examples/` 提供与界面一致的 JSON/JSONL 案例。
-- `src/storage.js`：浏览器存储适配器。
-- `src/media.js`：媒体播放、真实波形、时间选区与框交互。
-- `src/views.js`：视图与字段模板；`src/app.js`：用例、事件、环节切换。
-- `src/seed-data.js` / `assets/`：明确来源的模拟任务及本地媒体。
-- `PRD.md` / `DESIGN.md`：执行规格与用户确认后的设计方向。
-- `docs/`：竞品研究、REA证据、操作指南和验证结果。
-- `tests/`：业务规则与浏览器流程验证、支持Range的本地预览服务。
+开发和重建需要 Node 与锁定依赖：
 
-## 开发验证
+```sh
+npm ci --ignore-scripts
+npm run build:cloud
+node scripts/build-offline.mjs
+npm test
+python tests/preview_server.py 8768
+```
 
-无需安装项目运行依赖。业务测试使用 Node.js：`node --test tests/core.test.mjs tests/json-validation.test.mjs tests/review-workflow.test.mjs`。`tests/json-validator-browser.cjs` 验证独立 JSON 校验操作，`tests/browser-workflow.cjs` 回归媒体与审核流程，`tests/review-sync-browser.cjs` 专项验证双人复核与双视频同步。浏览器验证脚本依赖此机器已有的 Playwright 和 Edge，依赖不进入站点运行包。设置 `ANNOTA_BASE_URL` 可在正式网站复测。
+`build:cloud` 生成浏览器认证 SDK、WebM 元数据修复库和 `.server_build/index.mjs`。健康接口返回源码指纹以核对部署；ZIP 根入口须为 `index.mjs`。`src/team-config.js` 仅存公开 URL。交付排除 `node_modules/`、`.server_build/`、`.env*`、原始 REA 记录。生成后的双击版无需安装依赖。
 
-`打开演示.html` 为模块化源的离线合并版；修改源后运行 `python scripts/build_offline.py` 重新生成。它与标准入口使用相同逻辑，没有另一套业务实现。
+```sh
+node tests/browser-workflow.cjs
+node tests/json-validator-browser.cjs
+node tests/review-sync-browser.cjs
+node tests/clip-export-browser.cjs
+```
 
-## GitHub Pages 发布
-
-用户已于 2026-10-29 确认本版并要求发布。发布目标为 `Akasiarainsto/annota-studio`，由 `main` 分支根目录提供静态页面，保留 `.nojekyll`，入口为 `index.html`。不需要框架构建或服务端运行。后续推送到发布分支后，由 GitHub Pages 更新站点。
-
-公开仓库仅包含演示源码、模拟素材、操作文档与验证记录；原始研究记录不纳入 Git。浏览器草稿和用户自行导入的媒体不在仓库内。上线后仍是浏览器本地工作区，没有账号或多人后端。部署和检查步骤见 `docs/GitHub_Pages发布说明.md`。
-
-本地文件地址与 HTTPS 网站使用各自的浏览器存储。迁移原草稿应先在原页面导出完整备份，再在网站“恢复”；备份不含媒体二进制，导入素材需另行重新关联。
+浏览器脚本使用开发机已有 Playwright/Edge，其他机器需调整路径。设置 `ANNOTA_BASE_URL` 复测网站。多人开发验证见 `docs/team_verification.json`，线上验收单独保存。部署步骤见 [GitHub Pages 发布说明](docs/GitHub_Pages发布说明.md)。
 
 ## 数据与结果边界
 
-语音是本机合成普通话和程序噪声，视频是程序动画，橙子图是程序绘图；新增笔记本摄影来自 Unsplash：<https://images.unsplash.com/photo-1496181133206-80ce9b88a853>。不能把这些样例当成真实方言、生产模型输出或用户过去项目的样本。
+语音为合成普通话和程序噪声，视频为程序动画，橙子图为程序绘图；笔记本摄影来自 Unsplash 公开素材 photo-1496181133206-80ce9b88a853。不能将它们称作真实方言、生产模型输出或用户过去项目的客户样本；新系统不能证明用户过去已经上线此系统。
 
-质检是同一浏览器中的流程模拟，没有真实双人权限隔离。没有自动ASR、自动OCR、自动语义质检或模型推理。JSON检查通过只说明符合声明的结构与边界规则，不代表内容准确、美观或合规。
+格式校验不替代内容、语义、审美或合规复核，不能由此推算“节省 80% 人力”。本地姓名复核仍是流程模拟；团队版本才由真实账号和服务端检查执行隔离。

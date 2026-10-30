@@ -22,7 +22,7 @@ export default {
     const cors=getCorsHeaders(request);
     if(!cors.allowed)return Response.json({error:'来源域名未授权'},{status:403});
     if(request.method==='OPTIONS')return new Response(null,{status:204,headers:cors.headers});
-    if(new URL(request.url).pathname==='/health')return Response.json({ok:true,service:'annota-team',database:!!process.env.DATABASE_URL,auth:!!process.env.NEON_AUTH_JWKS_URL,storage:!!process.env.AWS_ENDPOINT_URL_S3},{headers:cors.headers});
+    if(new URL(request.url).pathname==='/health')return Response.json({ok:true,service:'annota-team',version:'2.0.0',build:process.env.ANNOTA_BUILD_ID||'development',database:!!process.env.DATABASE_URL,auth:!!process.env.NEON_AUTH_JWKS_URL,storage:!!process.env.AWS_ENDPOINT_URL_S3},{headers:{...cors.headers,'Cache-Control':'no-store'}});
     try {
       const identity=await authenticate(request);const user=await ensureUser(identity);
       const result=await routeRequest(request,user);const response=result instanceof Response?result:Response.json(result);

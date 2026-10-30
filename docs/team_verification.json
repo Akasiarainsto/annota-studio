@@ -1,0 +1,118 @@
+{
+  "time": "2026-10-30T00:01:50.514Z",
+  "environment": "development",
+  "projectId": "8c0bdb1e-5d43-4550-819e-6f79a7e6c3d8",
+  "accounts": [
+    {
+      "role": "负责人",
+      "id": "39cf13c2-aad0-4aa0-a103-78119edd52d0"
+    },
+    {
+      "role": "标注员",
+      "id": "66738c0d-f52d-4538-b4ee-042b3eb7ca0a"
+    },
+    {
+      "role": "复核甲",
+      "id": "aa7ddfa6-d564-4d59-bd70-be31469809e0"
+    },
+    {
+      "role": "复核乙",
+      "id": "6bcfd560-0b47-4118-af90-b6565d3421d0"
+    },
+    {
+      "role": "外部用户",
+      "id": "0b3b87d1-f713-425c-ab8d-96553dd1ebf0"
+    }
+  ],
+  "checks": [
+    "real signup and isolated identities",
+    "single use invite rejects replay",
+    "reviewer joins project",
+    "new simulated image task is assigned draft",
+    "annotator cannot invite",
+    "reviewer cannot modify annotation",
+    "second distinct reviewer joins",
+    "cross project task denied",
+    "cross project membership denied",
+    "annotator dashboard denied",
+    "forged assignment denied",
+    "cloud editor save visible in independent account",
+    "stale device cannot overwrite latest data",
+    "session and annotation survive reload",
+    "cloud submit enters pending",
+    "three modality fixtures pass server validation",
+    "server blocks audio timeline overflow",
+    "stratified batch freezes all three modalities",
+    "self reviewer assignment excluded",
+    "reviewer B cannot see A verdict before own submission",
+    "owner cannot see incomplete reviewer verdicts",
+    "locked vote cannot be overwritten",
+    "server calculates known Kappa 0.5",
+    "both fail auto return and split disputes",
+    "ordinary annotator cannot arbitrate",
+    "manager arbitration returns disputed task",
+    "arbitration preserves original Kappa",
+    "upload creates private non-demo task",
+    "private media downloads and decodes",
+    "outside account cannot read private media",
+    "read only account can view private media",
+    "read only save and submission disabled",
+    "annotation timer starts",
+    "annotation timer stops",
+    "dashboard reflects real submissions and auto returns",
+    "timer records server elapsed time",
+    "review count belongs to real reviewer",
+    "review timer starts for assigned reviewer",
+    "review timer stops",
+    "stale frozen revision cannot receive vote",
+    "stale batch shows expired snapshot",
+    "real 3s video file with audible audio",
+    "real 5s video file with audible audio",
+    "real 10s video file with audible audio",
+    "PCM WAV 3 5 10 second files decode exact durations",
+    "cancel stops encoding without successful file",
+    "QC browser renders computed Kappa",
+    "abandoned heartbeat automatically releases next task"
+  ],
+  "videoFiles": [
+    {
+      "seconds": 3,
+      "duration": 3.0365,
+      "audioDuration": 3,
+      "rms": 0.1418693210529657,
+      "bytes": 65857
+    },
+    {
+      "seconds": 5,
+      "duration": 5.008599,
+      "audioDuration": 4.98,
+      "rms": 0.1418056872118907,
+      "bytes": 109218
+    },
+    {
+      "seconds": 10,
+      "duration": 10.012599,
+      "audioDuration": 9.96,
+      "rms": 0.1418574172182946,
+      "bytes": 219204
+    }
+  ],
+  "wavFiles": [
+    {
+      "seconds": 3,
+      "duration": 3,
+      "bytes": 288044
+    },
+    {
+      "seconds": 5,
+      "duration": 5,
+      "bytes": 480044
+    },
+    {
+      "seconds": 10,
+      "duration": 10,
+      "bytes": 960044
+    }
+  ],
+  "errors": []
+}

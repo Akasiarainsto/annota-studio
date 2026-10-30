@@ -1,5 +1,21 @@
 # GitHub Pages 发布说明
 
+## 2026-10-30 团队协作试用升级
+
+本节优先于下方初版历史记录。Pages 继续从 `main` 根目录提供页面，新增 `team.html` 与 `team_task.html`；首页本地存储规则保留。真实团队 API、认证、数据库和私有媒体在独立 Neon 环境运行，Pages 本身不运行服务端。
+
+重建先执行 `npm ci --ignore-scripts`、`npm run build:cloud`、`node scripts/build-offline.mjs`；提交生成的 `vendor/` 和离线 HTML。Function ZIP 根目录放 `.server_build/index.mjs`，通过已授权的 Neon 部署工具发布，数据库、Auth、S3 凭据仅由服务端注入。健康接口返回 `build`，须与本地 `.server_build/build-id.txt` 一致，再做鉴权与界面验证，不能只看部署工具显示 completed。
+
+线上试用资源：项目 `fancy-unit-32013028`，分支 `br-delicate-darkness-aoyjl19x`，数据库 `annota`，私有桶 `media`，Function `api`。开发分支 `br-small-unit-aogi29p2` 隔离保存联调数据；不得把开发账号/验收项目复制到线上。公开 URL 在 `src/team-config.js`，没有数据库密码或存储密钥。
+
+新验证：71 项规则/保存队列/请求契约测试，旧媒体工作流 14 组、JSON 12 组、双人复核/同步 8 组，真实片段导出 5 组；多人开发联调 48 项记录在 `team_verification.json`。线上发布后另行记录真实登录、接口、静态文件和 UI 实测，不把开发结果冒充线上验收。
+
+先提交开发分支并本地快进合并到 `main`，检查没有他人远端更新后推送，等待 Pages Actions 成功，再在线复测与打包交付。排除 `.env*`、`.server_build/`、`node_modules/`、原始 REA 记录、用户媒体或工作区备份。
+
+当前发布为真实协作试用版：邮箱归属未验证，未提供找回密码页面，发信仍用共享配置。业务正式投产前需完成自己的 SMTP 和邮件流程，见 [Neon Auth 生产要求](https://neon.com/docs/auth/production-checklist)。用户上传的云端素材由其项目成员读取；本地草稿不自动迁入云端。
+
+## 初版发布历史（2026-10-29）
+
 用户于 2026-10-29 确认当前版本并要求上线 GitHub。
 
 - 仓库：<https://github.com/Akasiarainsto/annota-studio>

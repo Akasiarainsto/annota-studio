@@ -22,6 +22,8 @@ const state={tasks:loaded.tasks,phase:'annotation',modality:'audio',taskId:'DOL-
 const workspace=document.querySelector('#workspace');
 let mediaController=null;
 let saveTimer=null;
+let editVersion=0;
+let savedVersion=0;
 let toastTimer=null;
 let relinkId=null;
 let renderToken=0;
@@ -47,10 +49,12 @@ function showModal(title,body,actions='') {
 }
 async function saveTasks(options={}) {
   clearTimeout(saveTimer);
+  const versionToSave=editVersion;
   if(state.blocked) {if(!options.quiet) notify('草稿保护已开启，请先导出备份或在帮助中重建存储。');return false;}
   try {
     if(cloud&&!cloud.canEdit){if(!options.quiet)notify('此云端任务为只读');return false;}
     await persistTasks(state.tasks);
+    savedVersion=Math.max(savedVersion,versionToSave);
     document.querySelector('#save-indicator').textContent=cloud?(cloud.pending?'云端同步中…':'已保存到云端'):'草稿已存本机';
     if(!options.quiet)notify(cloud?'标注已保存在云端':'草稿已保存在当前浏览器');return true;
   } catch(error) {
@@ -63,9 +67,10 @@ function rememberTask() {
   if(state.undo.length>MAX_UNDO)state.undo.shift();
 }
 function changedTask(options={}) {
+  editVersion++;
   Object.assign(currentTask(),markEdited(currentTask()));
   document.querySelector('#save-indicator').textContent='正在保存…';
-  saveTimer=setTimeout(()=>saveTasks({quiet:true}),450);
+  clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveTasks({quiet:true}),450);
   if(options.render!==false){renderTasks();refreshInspector();refreshSegments();mediaController?.repaint();}
   refreshHeading();
   refreshLiveValidation();
@@ -81,8 +86,13 @@ function renderTasks() {
   document.querySelector('#queue-count').textContent=`任务队列 · ${tasks.length}`;
   document.querySelector('#project-footnote').textContent=`${PROJECTS[state.modality].name} · ${PROJECTS[state.modality].description}`;
 }
+function refreshClipControls(task) {
+  const exportButton=workspace.querySelector('[data-action="export-clip"]');if(exportButton)exportButton.disabled=!selectedSegment();
+  const quickButton=workspace.querySelector('[data-action="quick-clip"]');if(quickButton)quickButton.disabled=task.media.duration<3;
+  for(const option of workspace.querySelectorAll('#clip-duration option'))option.disabled=Number(option.value)>task.media.duration;
+}
 function refreshSegments() {
-  const task=currentTask();
+  const task=currentTask();refreshClipControls(task);
   const list=document.querySelector('#segment-list');
   if(list)list.innerHTML=views.segmentRows(task,state,state.phase==='annotation'&&(!cloud||cloud.canEdit));
   const lane=document.querySelector('#segment-lane');
@@ -139,7 +149,7 @@ function mediaOptions(task,editable) {
     onSelectSegment:selectSegment,onSelectRegion:selectObject,
     onCreateSegment:addSegment,onCreateRegion:createRegion,onMoveRegion:moveRegion,
     onCreateKeyframe:createKeyframe,onTimeChange:()=>{},
-    onDuration:metadata=>{Object.assign(task.media,metadata);},onError:notify};
+    onDuration:metadata=>{Object.assign(task.media,metadata);refreshClipControls(task);},onError:notify};
 }
 function selectSegment(id) {
   state.segmentId=id;refreshSegments();if(state.phase==='annotation')refreshInspector();
@@ -181,6 +191,7 @@ function updateInput(element) {
   const task=currentTask();const [scope,key]=bind.split('.');
   const value=element.type==='checkbox'?element.checked:element.type==='number'?Number(element.value):element.value;
   if(['evaluation','rating'].includes(scope)) {
+    editVersion++;
     if(scope==='rating')task.evaluation.ratings[key]=value===''||value==='na'?value:Number(value);
     else task.evaluation[key]=value;
     clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveTasks({quiet:true}),450);return;
@@ -371,6 +382,7 @@ async function initialise() {
   document.querySelector('#status-filter').addEventListener('change',event=>{state.filter=event.target.value;renderTasks();});
   document.querySelector('#media-import').addEventListener('change',async event=>{await importMedia([...event.target.files]);event.target.value='';});
   document.querySelector('#backup-import').addEventListener('change',async event=>{if(event.target.files[0])await restoreBackup(event.target.files[0]);event.target.value='';});
+  window.addEventListener('beforeunload',event=>{if(cloud&&(editVersion>savedVersion||cloud.pending)){event.preventDefault();event.returnValue='';}});
   window.addEventListener('pagehide',()=>{if(!state.blocked)saveTasks({quiet:true});for(const url of objectUrls.values())URL.revokeObjectURL(url);});
   hydrateIcons();await renderWorkspace();
   if(state.blocked){document.querySelector('#save-indicator').textContent='草稿保护中';showHelp();}

@@ -14,7 +14,7 @@ async function exportAudio(blob,options) {
   finally {await context.close();}
 }
 async function recordVideo(player,options) {
-  const audio=new AudioContext();try{await audio.resume();}catch(error){await audio.close();throw error;}
+  const audio=new AudioContext();try{await audio.resume();options.signal?.throwIfAborted();}catch(error){await audio.close();throw error;}
   return new Promise((resolve,reject)=>{
     const canvas=document.createElement('canvas');canvas.width=player.videoWidth;canvas.height=player.videoHeight;const painter=canvas.getContext('2d');
     const stream=canvas.captureStream(30),destination=audio.createMediaStreamDestination();audio.createMediaElementSource(player).connect(destination);destination.stream.getAudioTracks().forEach(track=>stream.addTrack(track));
@@ -36,7 +36,8 @@ async function recordVideo(player,options) {
 }
 async function exportVideo(blob,options) {
   if(!globalThis.MediaRecorder||!HTMLCanvasElement.prototype.captureStream)throw new Error('当前浏览器不支持视频片段编码，请使用新版 Edge 或 Chrome');
-  const player=document.createElement('video');const url=URL.createObjectURL(blob);player.preload='auto';player.muted=true;player.playsInline=true;
+  const player=document.createElement('video');const url=URL.createObjectURL(blob);player.preload='auto';player.playsInline=true;
+  // MediaElementSource feeds only the recording destination; muting the element would also mute its captured samples.
   try {
     const metadata=waitMedia({player,event:'loadedmetadata',signal:options.signal});player.src=url;await metadata;
     if(!Number.isFinite(player.duration)||options.end>player.duration+.05)throw new Error('片段超出实际视频时长');

@@ -1,0 +1,28 @@
+{
+  "time": "2026-10-30T00:14:15.856Z",
+  "environment": "main-trial",
+  "health": {
+    "ok": true,
+    "service": "annota-team",
+    "version": "2.0.0",
+    "build": "3648ea653b7ec55a",
+    "database": true,
+    "auth": true,
+    "storage": true
+  },
+  "checks": [
+    "main branch signup uses real authenticated account",
+    "project and simulated task created through UI",
+    "saved task and session restore after reload",
+    "sign out clears browser session",
+    "password sign in restores projects",
+    "anonymous protected API is rejected",
+    "independent main account cannot read another project",
+    "main invite joins authorized member",
+    "owner changes actual member role through UI",
+    "changed role immediately enforced by API",
+    "final backend rejects malformed nested task as client error",
+    "deployed source fingerprint matches final bundle"
+  ],
+  "errors": []
+}

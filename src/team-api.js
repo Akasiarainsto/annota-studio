@@ -13,7 +13,7 @@ export async function authenticateTeam({mode,email,password,name}) {
   const result=mode==='signup'?await auth.signUp.email({email,password,name}):await auth.signIn.email({email,password});
   if(result.error)throw new Error(result.error.message||'登录失败');tokenCache.token=null;return getTeamSession();
 }
-export async function signOutTeam() {await auth.signOut();tokenCache.token=null;tokenCache.expires=0;}
+export async function signOutTeam() {const result=await auth.signOut();if(result.error)throw new Error(result.error.message||'退出登录失败');tokenCache.token=null;tokenCache.expires=0;}
 async function getBearerToken() {
   if(tokenCache.token&&tokenCache.expires>Date.now()+30000)return tokenCache.token;
   const result=await auth.token(FORCE_FETCH);if(result.error||!result.data?.token)throw new Error(result.error?.message||'请先登录');
