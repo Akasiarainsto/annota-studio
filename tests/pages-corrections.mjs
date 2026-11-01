@@ -11,7 +11,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'C:/Users/29346/.cache/cod
 const DATA_ROOT=await mkdtemp(join(tmpdir(),'annota-correction-test-'));
 const EVIDENCE=resolve('evidence');await mkdir(EVIDENCE,{recursive:true});
 const server=startStaticServer();await once(server,'listening');const BASE=process.env.ANNOTA_BASE_URL||('http://127.0.0.1:'+server.address().port+'/annota-studio');
-const browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+const browser=await chromium.launch({headless:true,...(process.env.ANNOTA_BASE_URL?{proxy:{server:process.env.ANNOTA_PROXY||'http://127.0.0.1:10808'}}:{}),executablePath:process.env.BROWSER_PATH||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
 const sharedContext=await browser.newContext({viewport:{width:1366,height:900}});const errors=[],steps=[];
 async function login(username){const page=await sharedContext.newPage();page.on('pageerror',error=>errors.push(error.stack));await page.goto(BASE);await page.locator('[name=username]').selectOption(username);await page.getByRole('button',{name:'登录工作区'}).click();await page.locator('#main').waitFor();return page;}
 async function api(page,path,method='GET',body){return await page.evaluate(async ({path,method,body})=>{const {request}=await import('./src/services/api.js');return await request(path,{method,body:body?JSON.stringify(body):undefined});},{path,method,body});}
@@ -35,4 +35,4 @@ try{
   const dashboard=await api(manager,'/dashboard');assert.equal(dashboard.kappa.matrix.pass_pass,0);assert.equal(dashboard.kappa.matrix.fail_fail,2);steps.push('completed-result request, manager reopening, new independent votes and valid statistics');
   assert.deepEqual(errors,[]);passed=true;process.stdout.write('PASS '+steps.join('\nPASS ')+'\n');
 }catch(error){process.stderr.write(error.stack+'\n');process.exitCode=1;}
-finally{await writeFile(join(EVIDENCE,'pages_corrections_report.json'),JSON.stringify({passed,steps,consoleErrors:errors},null,2));await browser.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));assert.ok(DATA_ROOT.startsWith(join(tmpdir(),'annota-correction-test-')));await rm(DATA_ROOT,{recursive:true,force:true});}
+finally{await writeFile(join(EVIDENCE,'pages_corrections_report.json'),JSON.stringify({base:BASE,passed,steps,consoleErrors:errors},null,2));await browser.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));assert.ok(DATA_ROOT.startsWith(join(tmpdir(),'annota-correction-test-')));await rm(DATA_ROOT,{recursive:true,force:true});}

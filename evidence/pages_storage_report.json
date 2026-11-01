@@ -1,7 +1,8 @@
 {
+  "base": "http://127.0.0.1:64333/annota-studio/",
   "passed": true,
   "steps": [
-    "different visitors keep isolated databases; saved edits survive reload",
+    "different visitors keep isolated databases; saved edits survive reload without re-fetching seed",
     "reset needs confirmation and restores only this browser to four clean seed tasks"
   ],
   "consoleErrors": []

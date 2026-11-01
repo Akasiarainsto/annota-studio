@@ -12,7 +12,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'C:/Users/29346/.cache/cod
 const EVIDENCE=resolve('evidence');await mkdir(EVIDENCE,{recursive:true});
 const server=startStaticServer();await once(server,'listening');
 const BASE=process.env.ANNOTA_BASE_URL||('http://127.0.0.1:'+server.address().port+'/annota-studio');
-const browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+const browser=await chromium.launch({headless:true,...(process.env.ANNOTA_BASE_URL?{proxy:{server:process.env.ANNOTA_PROXY||'http://127.0.0.1:10808'}}:{}),executablePath:process.env.BROWSER_PATH||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
 const sharedContext=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});
 const results=[],errors=[],pages=[];
 async function demoApi(page,path,method='GET',body){return await page.evaluate(async ({path,method,body})=>{const {request}=await import('./src/services/api.js');return await request(path,{method,body:body?JSON.stringify(body):undefined});},{path,method,body});}
@@ -100,5 +100,5 @@ try {
   assert.deepEqual(errors,[]);passed=true;
 }catch(error){results.push({name:'FAILED',passed:false,error:error.stack});process.stderr.write(error.stack+'\n');for(let index=0;index<pages.length;index++)try{await pages[index].screenshot({path:join(EVIDENCE,`failure_${index}.png`)});}catch(screenshotError){process.stderr.write(screenshotError.message+'\n');}process.exitCode=1;}
 finally{
-  await writeFile(join(EVIDENCE,'pages_browser_report.json'),JSON.stringify({at:new Date().toISOString(),passed,steps:results,consoleErrors:errors},null,2));await browser.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));
+  await writeFile(join(EVIDENCE,'pages_browser_report.json'),JSON.stringify({base:BASE,at:new Date().toISOString(),passed,steps:results,consoleErrors:errors},null,2));await browser.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));
 }

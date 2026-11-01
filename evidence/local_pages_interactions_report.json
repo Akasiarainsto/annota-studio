@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "steps": [
+    "all nine error selections auto-load actual bad JSON; repaired JSON passes independent of case selector",
+    "stale pass invalidated on input, report matches current text, JSONL checked",
+    "video merge undo and redo restore original segments and captions",
+    "drag selects without mutations; apply, real export, overlap guidance and empty-gap creation work"
+  ],
+  "consoleErrors": []
+}

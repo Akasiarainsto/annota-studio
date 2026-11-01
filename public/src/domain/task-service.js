@@ -24,7 +24,7 @@ export function createTaskService(store) {
     const expected=task.version;task.version++;task.updatedAt=new Date().toISOString();appendEvent(task,user,kind);
     requireCondition(store.saveTask(task,expected),409,'任务版本已变化，请保留本地草稿后重新载入');return exposeTask(task,user);
   };
-  const checkVersion=(task,body)=>requireCondition(body.version===task.version,409,'服务端版本已变化；当前草稿未覆盖，请重新载入后比较');
+  const checkVersion=(task,body)=>requireCondition(body.version===task.version,409,'任务版本已变化；当前草稿未覆盖，请重新载入后比较');
   return {
     list:user=>store.listTasks().map(task=>{const view=exposeTask(task,user);return {id:view.id,label:view.label,modality:view.modality,status:view.status,version:view.version,round:view.round,media:view.media,assignee:view.assignee,difficulty:view.difficulty,canEdit:view.canEdit,canReview:view.canReview,canArbitrate:view.canArbitrate,canHandleCorrection:view.canHandleCorrection,reviewCount:view.reviewCount};}),
     get:(id,user)=>exposeTask(load(id),user),

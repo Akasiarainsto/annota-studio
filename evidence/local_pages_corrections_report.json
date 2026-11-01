@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "steps": [
+    "single-review withdrawal, audit, re-entry and changed outcome",
+    "completed-result request, manager reopening, new independent votes and valid statistics"
+  ],
+  "consoleErrors": []
+}

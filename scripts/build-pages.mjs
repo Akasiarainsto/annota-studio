@@ -9,8 +9,8 @@ function makeRelative(value) {
   if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,item])=>[key,makeRelative(item)]));
   return value;
 }
-await writeFile(join(ROOT,'public/assets/demo_tasks.json'),JSON.stringify(makeRelative(tasks),null,2)+'\n');
 await mkdir(DIST,{recursive:true});await cp(join(ROOT,'public'),DIST,{recursive:true});
+await writeFile(join(DIST,'assets/demo_tasks.json'),JSON.stringify(makeRelative(tasks),null,2)+'\n');
 await writeFile(join(DIST,'.nojekyll'),'');
 async function verifyScripts(directory) {
   for(const file of await readdir(directory,{withFileTypes:true})){

@@ -1,0 +1,51 @@
+{
+  "at": "2026-11-01T12:07:01.187Z",
+  "passed": true,
+  "steps": [
+    {
+      "name": "audio waveform, playback, manual boundary drag and inline time validation",
+      "passed": true
+    },
+    {
+      "name": "audio split and undo, 5-second real WAV clip, timer and saved reload",
+      "passed": true
+    },
+    {
+      "name": "JSON modality-specific examples, error line selection, JSONL and safe re-application",
+      "passed": true
+    },
+    {
+      "name": "audio submit, independent sealed reviews, dispute arbitration, return and second-round approval",
+      "passed": true
+    },
+    {
+      "name": "video editing, real 3-second WebM export and actual double-review approval",
+      "passed": true
+    },
+    {
+      "name": "image draw, move, corner resize, zoom-stable pixel coordinates, persistence and double review",
+      "passed": true
+    },
+    {
+      "name": "real A/B shared playback, seek, speed, shorter-end stop, one audio monitor and persisted rating",
+      "passed": true
+    },
+    {
+      "name": "project actual progress, Kappa degeneracy, stratified sampling and modality work time",
+      "passed": true
+    },
+    {
+      "name": "1366×768, dark theme and narrow viewport do not hide primary actions or overflow the page",
+      "passed": true
+    },
+    {
+      "name": "local audio, video and image imports persist actual media after reload",
+      "passed": true
+    },
+    {
+      "name": "two tabs cannot overwrite a newer browser revision and the losing draft remains exportable",
+      "passed": true
+    }
+  ],
+  "consoleErrors": []
+}
