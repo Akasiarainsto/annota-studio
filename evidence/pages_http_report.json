@@ -21,7 +21,7 @@
     {
       "path": "assets/demo_tasks.json",
       "bytes": 15605,
-      "sha256": "0f00eeabf09596249f2f3a17673d8874e0994ab4ef84aa500dc8b2d888f037f3"
+      "sha256": "ac6957378a4b0d957fe163cfbfef3618e17c03a6cc964565753d788c7058557b"
     },
     {
       "path": "assets/images/street_market.jpg",
@@ -56,7 +56,7 @@
     {
       "path": "deployment.json",
       "bytes": 95,
-      "sha256": "073d71678eb67419e4800df394b922e496d9d14ecda9461ec2c7f2083b9e03ba"
+      "sha256": "da15885cc233b99a66c4d34b3a7b773034ee266a920f720833996f04d05a98eb"
     },
     {
       "path": "index.html",
@@ -70,8 +70,8 @@
     },
     {
       "path": "src/app.js",
-      "bytes": 2114,
-      "sha256": "2a651ed401dcc54e3689d03424d5e4d94c1f61295e3ef0c63f0d49e2c16c6cd2"
+      "bytes": 2226,
+      "sha256": "eda7bf157592cea478862a097162e4bc13fc82c08cf64c43e79bc335c8255221"
     },
     {
       "path": "src/core/attributes.js",
@@ -150,8 +150,8 @@
     },
     {
       "path": "src/domain/task-service.js",
-      "bytes": 7934,
-      "sha256": "7bddf31dc1e22e62680cb31d3315728dbe1e26551a3493116822283cc41b45a8"
+      "bytes": 7931,
+      "sha256": "bcbfd73075c8cc73011303115659bb556ab1b978bc233ae401ccdb7fa930f943"
     },
     {
       "path": "src/domain/timer-service.js",
@@ -225,8 +225,8 @@
     },
     {
       "path": "src/services/demo-workspace.js",
-      "bytes": 1925,
-      "sha256": "1422af5a7c8253b98eacd9d3edb424ae834633f5cd3fa7be9b6662cbfcb19df9"
+      "bytes": 2637,
+      "sha256": "468bddf84614e2aa00b0a0c76521082b38815efc84ae36a6ff770f5ca35a06ca"
     },
     {
       "path": "src/services/history.js",
@@ -320,8 +320,8 @@
     },
     {
       "path": "src/workspace.js",
-      "bytes": 18688,
-      "sha256": "c7e998fc4af33eb3316f456f5e13ae50b6201e70b3d298cd3e1a0e17302a63ca"
+      "bytes": 18850,
+      "sha256": "728d33c154e273bfba72d9d2712202ca802f60a77ac1492fde36d8870fdf05dc"
     },
     {
       "path": "styles.css",

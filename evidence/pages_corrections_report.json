@@ -1,4 +1,5 @@
 {
+  "base": "https://akasiarainsto.github.io/annota-studio",
   "passed": true,
   "steps": [
     "single-review withdrawal, audit, re-entry and changed outcome",

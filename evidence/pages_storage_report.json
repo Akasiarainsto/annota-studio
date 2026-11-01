@@ -1,5 +1,5 @@
 {
-  "base": "http://127.0.0.1:64333/annota-studio/",
+  "base": "https://akasiarainsto.github.io/annota-studio",
   "passed": true,
   "steps": [
     "different visitors keep isolated databases; saved edits survive reload without re-fetching seed",

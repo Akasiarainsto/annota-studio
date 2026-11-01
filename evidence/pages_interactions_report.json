@@ -1,5 +1,5 @@
 {
-  "base": "http://127.0.0.1:65498/annota-studio",
+  "base": "https://akasiarainsto.github.io/annota-studio",
   "passed": true,
   "steps": [
     "all nine error selections auto-load actual bad JSON; repaired JSON passes independent of case selector",

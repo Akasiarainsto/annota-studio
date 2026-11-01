@@ -9,5 +9,16 @@
   "data_boundary": "role simulation, IndexedDB per browser, no cross-device authentication or synchronization",
   "local_server_data_uploaded": false,
   "seed_task_count": 4,
-  "publication": "pending"
+  "publication": "deployed_and_verified",
+  "url": "https://akasiarainsto.github.io/annota-studio/",
+  "checked_at": "2026-11-01T12:24:14.254172+00:00",
+  "source_commit": "596a6ed83c6006eb3df4a84adca9c5ec3ca1bf45",
+  "published_commit": "1b6d28861263af894db00e0b120fd3c058e8a94c",
+  "runtime_files_matched": 66,
+  "media_range_checks": 3,
+  "online_workflow_groups": 11,
+  "online_interaction_groups": 4,
+  "online_review_correction_groups": 2,
+  "online_storage_groups": 2,
+  "paid_service_created": false
 }
