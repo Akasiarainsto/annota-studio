@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "modality": "video",
+  "task_id": "V-001-CAPTION",
+  "status": "reference_draft",
+  "rule_version": "video-caption-1.0",
+  "media": {
+    "id": "case2-veo",
+    "file": "video/case2_veo3_1_fast.mp4",
+    "duration_s": 8.0,
+    "fps": 24
+  },
+  "seven_dimensions": [
+    "subject",
+    "action",
+    "camera",
+    "lighting",
+    "physical_dynamics",
+    "material",
+    "interaction"
+  ],
+  "segments": [
+    {
+      "id": "VS01",
+      "start_s": 0,
+      "end_s": 2.75,
+      "caption": "近距离画面中，一名深色衣着男子把圆盘状工具贴近透明隔挡，红色数字装置位于旁侧，随后工具附近出现火花与碎裂纹理。",
+      "dimensions": {
+        "subject": "男子、工具、透明隔挡",
+        "action": "工具接触隔挡",
+        "camera": "pending_continuous_review",
+        "lighting": "冷色环境光、局部红光",
+        "physical_dynamics": "火花与碎裂纹理；连续过程待复看",
+        "material": "金属外观工具与透明硬质表面，成分无法判断",
+        "interaction": "工具与隔挡接触"
+      },
+      "review_status": "pending_continuous_review"
+    },
+    {
+      "id": "VS02",
+      "start_s": 2.75,
+      "end_s": 4.416666666666667,
+      "caption": "一辆深色跑车出现在两侧布满涂鸦的窄巷，车身转向并驶离，地面附近升起大片烟雾。",
+      "dimensions": {
+        "subject": "深色跑车",
+        "action": "转向、驶离",
+        "camera": "pending_continuous_review",
+        "lighting": "较暗环境、车体和地面反光",
+        "physical_dynamics": "烟雾、轮地接触待连续复看",
+        "material": "光滑反光车体、粗糙墙面",
+        "interaction": "车辆与路面、烟雾遮挡"
+      },
+      "review_status": "pending_continuous_review"
+    },
+    {
+      "id": "VS03",
+      "start_s": 4.416666666666667,
+      "end_s": 5.916666666666667,
+      "caption": "同一巷道中，一个深色旅行包下落至地面，周围散开浅色碎片，两侧出现红蓝亮光。",
+      "dimensions": {
+        "subject": "旅行包、浅色碎片",
+        "action": "下落、落地、散开",
+        "camera": "pending_continuous_review",
+        "lighting": "红蓝局部亮光",
+        "physical_dynamics": "落地过程与碎片连续性待复看",
+        "material": "包体与碎片成分无法判断",
+        "interaction": "包体接触地面、碎片散开"
+      },
+      "review_status": "pending_continuous_review"
+    },
+    {
+      "id": "VS04",
+      "start_s": 5.916666666666667,
+      "end_s": 8,
+      "caption": "画面切为黑底，中央出现分为两行的银白色英文片名，并在后续画面中变大。",
+      "dimensions": {
+        "subject": "片名文字",
+        "action": "文字尺度变化",
+        "camera": "pending_continuous_review",
+        "lighting": "图形片尾，不适用自然光判断",
+        "physical_dynamics": "不适用：图形片尾",
+        "material": "不适用：图形文字",
+        "interaction": "不适用：无实体接触交互"
+      },
+      "review_status": "pending_continuous_review"
+    }
+  ]
+}

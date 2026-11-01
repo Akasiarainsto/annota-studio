@@ -1,36 +1,41 @@
-import {createRemoteJWKSet,jwtVerify} from 'jose';
-import {ensureUser} from './access.js';
-import {routeRequest} from './routes.js';
+import {createServer} from 'node:http';
+import {fileURLToPath} from 'node:url';
+import {dirname,resolve,join} from 'node:path';
+import {readFileSync,mkdirSync} from 'node:fs';
+import {createStore} from './sqlite-store.js';
+import {createAccounts,seedAccounts} from './accounts.js';
+import {seedTasks} from './seed.js';
+import {createTaskService} from './task-service.js';
+import {createTimerService} from './timer-service.js';
+import {createRoutes} from './routes.js';
+import {serveFile} from './media.js';
+import {sendJson,requireCondition} from './http.js';
 
-const jwks=createRemoteJWKSet(new URL(process.env.NEON_AUTH_JWKS_URL));
-function getCorsHeaders(request) {
-  const origin=request.headers.get('origin');
-  const allowed=!origin||origin==='https://akasiarainsto.github.io'||/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
-  return {allowed,headers:{'Access-Control-Allow-Origin':allowed&&origin?origin:'https://akasiarainsto.github.io','Access-Control-Allow-Headers':'Authorization,Content-Type,If-Match,Range','Access-Control-Allow-Methods':'GET,POST,PUT,PATCH,OPTIONS','Access-Control-Expose-Headers':'Content-Range,Content-Length','Vary':'Origin'}};
-}
-async function authenticate(request) {
-  const authorization=request.headers.get('authorization')||'';
-  if(!authorization.startsWith('Bearer '))throw Object.assign(new Error('请先登录'),{status:401});
-  try {
-    const {payload}=await jwtVerify(authorization.slice(7),jwks,{issuer:new URL(process.env.NEON_AUTH_BASE_URL).origin});
-    if(!payload.sub)throw new Error('Missing subject');
-    return {id:payload.sub,name:payload.name||'',email:payload.email||''};
-  } catch {throw Object.assign(new Error('登录已过期，请重新登录'),{status:401});}
-}
-export default {
-  async fetch(request) {
-    const cors=getCorsHeaders(request);
-    if(!cors.allowed)return Response.json({error:'来源域名未授权'},{status:403});
-    if(request.method==='OPTIONS')return new Response(null,{status:204,headers:cors.headers});
-    if(new URL(request.url).pathname==='/health')return Response.json({ok:true,service:'annota-team',version:'2.0.0',build:process.env.ANNOTA_BUILD_ID||'development',database:!!process.env.DATABASE_URL,auth:!!process.env.NEON_AUTH_JWKS_URL,storage:!!process.env.AWS_ENDPOINT_URL_S3},{headers:{...cors.headers,'Cache-Control':'no-store'}});
+const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+export function startServer(options={}) {
+  const dataRoot=options.dataRoot||process.env.ANNOTA_DATA_DIR||join(ROOT,'.local_data');
+  const uploadRoot=join(dataRoot,'uploads');mkdirSync(uploadRoot,{recursive:true});
+  const store=createStore(join(dataRoot,'workbench.sqlite'));seedAccounts(store);seedTasks(store,ROOT);
+  const accounts=createAccounts(store);const tasks=createTaskService(store);const timers=createTimerService(store);
+  const routes=createRoutes({store,accounts,tasks,timers,uploadRoot});
+  const server=createServer(async(request,response)=>{
     try {
-      const identity=await authenticate(request);const user=await ensureUser(identity);
-      const result=await routeRequest(request,user);const response=result instanceof Response?result:Response.json(result);
-      for(const [key,value]of Object.entries(cors.headers))response.headers.set(key,value);
-      response.headers.set('Cache-Control','private,no-store');return response;
+      const host=request.headers.host||'';requireCondition(/^(127\.0\.0\.1|localhost)(:\d+)?$/.test(host),403,'仅支持本机访问');
+      if (request.headers.origin) requireCondition(['http://'+host].includes(request.headers.origin),403,'请求来源不匹配');
+      const path=decodeURIComponent(new URL(request.url,'http://'+host).pathname);
+      if (path==='/src/runtime-config.js') {response.writeHead(200,{'Content-Type':'text/javascript; charset=utf-8','Cache-Control':'no-store'});return response.end(readFileSync(join(ROOT,'public/src/runtime-config.js'),'utf8').replace("RUNTIME_MODE='interview'","RUNTIME_MODE='local'"));}
+      if (path==='/health') return sendJson(response,{ok:true,version:'3.0.0-local.3',workspace:ROOT});
+      if (path.startsWith('/api/')) return await routes(request,response,path);
+      if (path.startsWith('/uploads/')) {accounts.requireUser(request);return await serveFile(request,response,{root:uploadRoot,path:path.slice(8)});}
+      return await serveFile(request,response,{root:join(ROOT,'public'),path:path==='/'?'/index.html':path});
     } catch(error) {
-      const status=error.status||(['23505','40001','40P01'].includes(error.code)?409:['22P02','23514'].includes(error.code)?400:500);
-      return Response.json({error:status===500?'服务暂时不可用，请稍后重试':error.message,issues:error.issues||undefined},{status,headers:cors.headers});
+      if (!response.headersSent) sendJson(response,{error:error.status?error.message:'本地服务出现错误，请查看服务日志',issues:error.issues||[]},error.status||500);
+      if (!error.status) process.stderr.write((error.stack||String(error))+'\n');
     }
-  }
-};
+  });
+  server.on('close',()=>store.close());server.listen(options.port??Number(process.env.PORT||8788),'127.0.0.1');
+  return server;
+}
+if (process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
+  const server=startServer();server.on('listening',()=>process.stdout.write(`Annota local ready: http://127.0.0.1:${server.address().port}/\n`));
+}

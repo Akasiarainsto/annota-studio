@@ -1,0 +1,477 @@
+[
+  {
+    "id": "A-001",
+    "label": "宁夏畜牧业 · 句段转写",
+    "modality": "audio",
+    "objective": "复听三段，核对同音字并确认句段边界。保留原始机器稿，不凭常识改写罕见术语。",
+    "difficulty": "常规",
+    "media": {
+      "id": "D11_766",
+      "duration_s": 12.958,
+      "sample_rate_hz": 16000,
+      "channels": 1,
+      "url": "./assets/audio/D11_766.wav"
+    },
+    "draft": {
+      "schema_version": "1.0",
+      "modality": "audio",
+      "task_id": "A-001",
+      "rule_version": "audio-manual-1.0",
+      "media": {
+        "id": "D11_766",
+        "duration_s": 12.958,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "url": "./assets/audio/D11_766.wav"
+      },
+      "speakers": [
+        {
+          "id": "S1"
+        }
+      ],
+      "segments": [
+        {
+          "id": "S01",
+          "start_s": 0.8,
+          "end_s": 3.9,
+          "transcript": "宁夏拥有四千多万亩草场。",
+          "speaker_id": "S1",
+          "language": "zh-CN",
+          "scene": "read_speech",
+          "quality": "clear",
+          "boundary_status": "pending_listen",
+          "overlap": false,
+          "revision_reason": "",
+          "note": ""
+        },
+        {
+          "id": "S02",
+          "start_s": 3.9,
+          "end_s": 8.5,
+          "transcript": "其羊羔肉、胎羊皮、沙毛山羊驰名中外。",
+          "speaker_id": "S1",
+          "language": "zh-CN",
+          "scene": "read_speech",
+          "quality": "clear",
+          "boundary_status": "pending_listen",
+          "overlap": false,
+          "revision_reason": "",
+          "note": ""
+        },
+        {
+          "id": "S03",
+          "start_s": 8.5,
+          "end_s": 12.9,
+          "transcript": "羊毛、羊绒及皮章是宁夏的大宗出口商品。",
+          "speaker_id": "S1",
+          "language": "zh-CN",
+          "scene": "read_speech",
+          "quality": "clear",
+          "boundary_status": "pending_listen",
+          "overlap": false,
+          "revision_reason": "",
+          "note": ""
+        }
+      ],
+      "reference_notice": "公开参考正文；标点为编辑规则补充，边界待人工复听；不是已验收金标准。"
+    },
+    "reference": {
+      "schema_version": "1.0",
+      "modality": "audio",
+      "task_id": "A-001",
+      "rule_version": "audio-manual-1.0",
+      "media": {
+        "id": "D11_766",
+        "duration_s": 12.958,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "url": "./assets/audio/D11_766.wav"
+      },
+      "speakers": [
+        {
+          "id": "S1"
+        }
+      ],
+      "segments": [
+        {
+          "id": "S01",
+          "start_s": 0.8,
+          "end_s": 3.9,
+          "transcript": "宁夏拥有四千多万亩草场。",
+          "speaker_id": "S1",
+          "language": "zh-CN",
+          "scene": "read_speech",
+          "quality": "clear",
+          "boundary_status": "pending_listen",
+          "overlap": false,
+          "revision_reason": "",
+          "note": ""
+        },
+        {
+          "id": "S02",
+          "start_s": 3.9,
+          "end_s": 8.5,
+          "transcript": "其羊羔肉、滩羊皮、沙毛山羊驰名中外。",
+          "speaker_id": "S1",
+          "language": "zh-CN",
+          "scene": "read_speech",
+          "quality": "clear",
+          "boundary_status": "pending_listen",
+          "overlap": false,
+          "revision_reason": "",
+          "note": ""
+        },
+        {
+          "id": "S03",
+          "start_s": 8.5,
+          "end_s": 12.9,
+          "transcript": "羊毛、羊绒及皮张是宁夏的大宗出口商品。",
+          "speaker_id": "S1",
+          "language": "zh-CN",
+          "scene": "read_speech",
+          "quality": "clear",
+          "boundary_status": "pending_listen",
+          "overlap": false,
+          "revision_reason": "",
+          "note": ""
+        }
+      ],
+      "reference_notice": "公开参考正文；标点为编辑规则补充，边界待人工复听；不是已验收金标准。"
+    },
+    "modelOriginal": "宁夏拥有四千多万亩草场其羊羔肉胎羊皮沙毛山羊驰名中外羊毛羊绒及皮章是宁夏的大宗出口商品",
+    "source": {
+      "name": "THCHS-30 · Apache 2.0",
+      "url": "https://www.openslr.org/18/"
+    },
+    "assignee": "annotator",
+    "status": "draft",
+    "version": 1,
+    "round": 0,
+    "rounds": [],
+    "reviews": [],
+    "events": [],
+    "updatedAt": "2026-11-01T12:10:03.236Z"
+  },
+  {
+    "id": "V-001",
+    "label": "行动预告 · 多镜头 Caption",
+    "modality": "video",
+    "objective": "描述画面实际发生的动作，逐段核对七维属性；不能照提示词补写不存在的情节。",
+    "difficulty": "常规",
+    "media": {
+      "id": "case2-veo",
+      "url": "./assets/video/case2_veo3_1_fast.mp4",
+      "duration_s": 8,
+      "fps": 24
+    },
+    "draft": {
+      "schema_version": "1.0",
+      "modality": "video",
+      "task_id": "V-001",
+      "media": {
+        "id": "case2-veo",
+        "url": "./assets/video/case2_veo3_1_fast.mp4",
+        "duration_s": 8,
+        "fps": 24
+      },
+      "segments": [
+        {
+          "id": "VS01",
+          "start_s": 0,
+          "end_s": 2.75,
+          "caption": "近距离画面中，一名深色衣着男子把圆盘状工具贴近透明隔挡，红色数字装置位于旁侧，随后工具附近出现火花与碎裂纹理。",
+          "dimensions": {
+            "subject": "person",
+            "action": "contact",
+            "camera": "uncertain",
+            "lighting": "lowlight",
+            "physical_dynamics": "suspect",
+            "material": "mixed",
+            "interaction": "contact"
+          },
+          "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+          "boundary_status": "pending_listen"
+        },
+        {
+          "id": "VS02",
+          "start_s": 2.75,
+          "end_s": 4.416666666666667,
+          "caption": "一辆深色跑车出现在两侧布满涂鸦的窄巷，车身转向并驶离，地面附近升起大片烟雾。",
+          "dimensions": {
+            "subject": "vehicle",
+            "action": "moving",
+            "camera": "uncertain",
+            "lighting": "lowlight",
+            "physical_dynamics": "uncertain",
+            "material": "metal",
+            "interaction": "occlusion"
+          },
+          "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+          "boundary_status": "pending_listen"
+        },
+        {
+          "id": "VS03",
+          "start_s": 4.416666666666667,
+          "end_s": 5.916666666666667,
+          "caption": "同一巷道中，一个深色旅行包下落至地面，周围散开浅色碎片，两侧出现红蓝亮光。",
+          "dimensions": {
+            "subject": "object",
+            "action": "moving",
+            "camera": "uncertain",
+            "lighting": "colored",
+            "physical_dynamics": "uncertain",
+            "material": "uncertain",
+            "interaction": "contact"
+          },
+          "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+          "boundary_status": "pending_listen"
+        },
+        {
+          "id": "VS04",
+          "start_s": 5.916666666666667,
+          "end_s": 8,
+          "caption": "画面切为黑底，中央出现分为两行的银白色英文片名，并在后续画面中变大。",
+          "dimensions": {
+            "subject": "text",
+            "action": "changing",
+            "camera": "not_applicable",
+            "lighting": "graphic",
+            "physical_dynamics": "not_applicable",
+            "material": "graphic",
+            "interaction": "none"
+          },
+          "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+          "boundary_status": "pending_listen"
+        }
+      ]
+    },
+    "reference": {
+      "schema_version": "1.0",
+      "modality": "video",
+      "task_id": "V-001",
+      "media": {
+        "id": "case2-veo",
+        "url": "./assets/video/case2_veo3_1_fast.mp4",
+        "duration_s": 8,
+        "fps": 24
+      },
+      "segments": [
+        {
+          "id": "VS01",
+          "start_s": 0,
+          "end_s": 2.75,
+          "caption": "近距离画面中，一名深色衣着男子把圆盘状工具贴近透明隔挡，红色数字装置位于旁侧，随后工具附近出现火花与碎裂纹理。",
+          "dimensions": {
+            "subject": "person",
+            "action": "contact",
+            "camera": "uncertain",
+            "lighting": "lowlight",
+            "physical_dynamics": "suspect",
+            "material": "mixed",
+            "interaction": "contact"
+          },
+          "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+          "boundary_status": "pending_listen"
+        },
+        {
+          "id": "VS02",
+          "start_s": 2.75,
+          "end_s": 4.416666666666667,
+          "caption": "一辆深色跑车出现在两侧布满涂鸦的窄巷，车身转向并驶离，地面附近升起大片烟雾。",
+          "dimensions": {
+            "subject": "vehicle",
+            "action": "moving",
+            "camera": "uncertain",
+            "lighting": "lowlight",
+            "physical_dynamics": "uncertain",
+            "material": "metal",
+            "interaction": "occlusion"
+          },
+          "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+          "boundary_status": "pending_listen"
+        },
+        {
+          "id": "VS03",
+          "start_s": 4.416666666666667,
+          "end_s": 5.916666666666667,
+          "caption": "同一巷道中，一个深色旅行包下落至地面，周围散开浅色碎片，两侧出现红蓝亮光。",
+          "dimensions": {
+            "subject": "object",
+            "action": "moving",
+            "camera": "uncertain",
+            "lighting": "colored",
+            "physical_dynamics": "uncertain",
+            "material": "uncertain",
+            "interaction": "contact"
+          },
+          "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+          "boundary_status": "pending_listen"
+        },
+        {
+          "id": "VS04",
+          "start_s": 5.916666666666667,
+          "end_s": 8,
+          "caption": "画面切为黑底，中央出现分为两行的银白色英文片名，并在后续画面中变大。",
+          "dimensions": {
+            "subject": "text",
+            "action": "changing",
+            "camera": "not_applicable",
+            "lighting": "graphic",
+            "physical_dynamics": "not_applicable",
+            "material": "graphic",
+            "interaction": "none"
+          },
+          "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+          "boundary_status": "pending_listen"
+        }
+      ]
+    },
+    "modelOriginal": null,
+    "source": {
+      "name": "Microsoft AVGen-Bench · case2",
+      "url": "https://microsoft.github.io/AVGen-Bench/"
+    },
+    "assignee": "annotator",
+    "status": "draft",
+    "version": 1,
+    "round": 0,
+    "rounds": [],
+    "reviews": [],
+    "events": [],
+    "updatedAt": "2026-11-01T12:10:03.237Z"
+  },
+  {
+    "id": "V-002",
+    "label": "烧杯变色 · 动态过程",
+    "modality": "video",
+    "objective": "连续观察颜色变化和搅拌过程，不把好看的单帧当成过程遵循证据。",
+    "difficulty": "常规",
+    "media": {
+      "id": "case4-veo",
+      "url": "./assets/video/case4_veo3_1_fast.mp4",
+      "duration_s": 8,
+      "fps": 24
+    },
+    "draft": {
+      "schema_version": "1.0",
+      "modality": "video",
+      "task_id": "V-002",
+      "media": {
+        "id": "case4-veo",
+        "url": "./assets/video/case4_veo3_1_fast.mp4",
+        "duration_s": 8,
+        "fps": 24
+      },
+      "segments": [
+        {
+          "id": "VS01",
+          "start_s": 0,
+          "end_s": 8,
+          "caption": "透明烧杯内的液体受搅拌产生旋涡，颜色在浅色、黄褐色与深蓝色之间变化。",
+          "dimensions": {
+            "subject": "object",
+            "action": "changing",
+            "camera": "fixed",
+            "lighting": "studio",
+            "physical_dynamics": "uncertain",
+            "material": "glass",
+            "interaction": "contact"
+          },
+          "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+          "boundary_status": "pending_listen"
+        }
+      ]
+    },
+    "reference": {
+      "schema_version": "1.0",
+      "modality": "video",
+      "task_id": "V-002",
+      "media": {
+        "id": "case4-veo",
+        "url": "./assets/video/case4_veo3_1_fast.mp4",
+        "duration_s": 8,
+        "fps": 24
+      },
+      "segments": [
+        {
+          "id": "VS01",
+          "start_s": 0,
+          "end_s": 8,
+          "caption": "透明烧杯内的液体受搅拌产生旋涡，颜色在浅色、黄褐色与深蓝色之间变化。",
+          "dimensions": {
+            "subject": "object",
+            "action": "changing",
+            "camera": "fixed",
+            "lighting": "studio",
+            "physical_dynamics": "uncertain",
+            "material": "glass",
+            "interaction": "contact"
+          },
+          "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+          "boundary_status": "pending_listen"
+        }
+      ]
+    },
+    "modelOriginal": null,
+    "source": {
+      "name": "Microsoft AVGen-Bench · case4",
+      "url": "https://microsoft.github.io/AVGen-Bench/"
+    },
+    "assignee": "annotator",
+    "status": "draft",
+    "version": 1,
+    "round": 0,
+    "rounds": [],
+    "reviews": [],
+    "events": [],
+    "updatedAt": "2026-11-01T12:10:03.237Z"
+  },
+  {
+    "id": "I-001",
+    "label": "街边市集 · 遮挡与主体区域",
+    "modality": "image",
+    "objective": "核对 Caption 和标签，至少框出一位人物。按可见区域画框，标明遮挡，不推断身份或人物关系。",
+    "difficulty": "常规",
+    "media": {
+      "id": "street-market",
+      "url": "./assets/images/street_market.jpg",
+      "width": 1920,
+      "height": 1440
+    },
+    "draft": {
+      "schema_version": "1.0",
+      "modality": "image",
+      "task_id": "I-001",
+      "media": {
+        "id": "street-market",
+        "url": "./assets/images/street_market.jpg",
+        "width": 1920,
+        "height": 1440
+      },
+      "caption": "树荫覆盖的街道上有多名行人。右侧店铺前陈列着帽子，一名戴浅色宽檐帽的成年人站在一名儿童后方；前方另一名白衣行人正沿街走来。",
+      "scene": "market",
+      "lighting": "daylight",
+      "tags": [
+        "person",
+        "goods",
+        "building"
+      ],
+      "boxes": [],
+      "content_confirmed": false
+    },
+    "reference": null,
+    "modelOriginal": null,
+    "source": {
+      "name": "U.S. Fish and Wildlife Service / Wikimedia Commons · Public domain",
+      "url": "https://commons.wikimedia.org/wiki/File:People_on_street_market_in_urban_part_of_town.jpg"
+    },
+    "assignee": "annotator",
+    "status": "draft",
+    "version": 1,
+    "round": 0,
+    "rounds": [],
+    "reviews": [],
+    "events": [],
+    "updatedAt": "2026-11-01T12:10:03.237Z"
+  }
+]

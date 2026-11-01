@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "steps": [
+    "different visitors keep isolated databases; saved edits survive reload",
+    "reset needs confirmation and restores only this browser to four clean seed tasks"
+  ],
+  "consoleErrors": []
+}

@@ -1,0 +1,113 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "pages": {
+      "24890257": {
+        "pageid": 24890257,
+        "ns": 6,
+        "title": "File:People on street market in urban part of town.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 266083,
+            "width": 2048,
+            "height": 1536,
+            "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/People_on_street_market_in_urban_part_of_town.jpg/1920px-People_on_street_market_in_urban_part_of_town.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "thumbwidth": 1600,
+            "thumbheight": 1200,
+            "responsiveUrls": {
+              "2": "https://upload.wikimedia.org/wikipedia/commons/5/59/People_on_street_market_in_urban_part_of_town.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+            },
+            "thumbattribs": {
+              "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/People_on_street_market_in_urban_part_of_town.jpg/1920px-People_on_street_market_in_urban_part_of_town.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 1200,
+              "srcset": "https://upload.wikimedia.org/wikipedia/commons/5/59/People_on_street_market_in_urban_part_of_town.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled 2x"
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/5/59/People_on_street_market_in_urban_part_of_town.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:People_on_street_market_in_urban_part_of_town.jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=24890257",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2013-02-27 11:06:12",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "People on street market in urban part of town",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Unidentified people|PD US FWS|Images uploaded by Fæ|Images uploaded by Fæ (check needed)|Public-domain-image.com|Public-domain-image.com (check needed)|Media needing category review as of 11 October 2013",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "<br>\n<dl><dd>Image title: People on street market in urban part of town</dd>\n<dd>Image from Public domain images website, <a rel=\"nofollow\" class=\"external free\" href=\"http://www.public-domain-image.com/full-image/people-public-domain-images-pictures/people-on-street-market-in-urban-part-of-town.jpg.html\">http://www.public-domain-image.com/full-image/people-public-domain-images-pictures/people-on-street-market-in-urban-part-of-town.jpg.html</a></dd></dl>",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "<p>Not given\n</p>\n<ul><li>Transferred by <a href=\"//commons.wikimedia.org/wiki/User:F%C3%A6\" title=\"User:Fæ\">Fæ</a> on 2013-02-27</li></ul>",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.public-domain-image.com/public-domain-images-pictures-free-stock-photos/people-public-domain-images-pictures/people-on-street-market-in-urban-part-of-town.jpg\">http://www.public-domain-image.com/public-domain-images-pictures-free-stock-photos/people-public-domain-images-pictures/people-on-street-market-in-urban-part-of-town.jpg</a>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "U.S. Fish and Wildlife Service",
+                "source": "commons-desc-page"
+              },
+              "Permission": {
+                "value": "This file is in public domain, not copyrighted, no rights reserved, free for any use. You can use this picture for any use including commercial purposes without the prior written permission and without fee or obligation.",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseShortName": {
+                "value": "Public domain",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Public domain",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "false",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Copyrighted": {
+                "value": "False",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "pd",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

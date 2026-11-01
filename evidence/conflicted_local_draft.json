@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "modality": "video",
+  "task_id": "V-002",
+  "media": {
+    "id": "case4-veo",
+    "url": "./assets/video/case4_veo3_1_fast.mp4",
+    "duration_s": 8,
+    "fps": 24
+  },
+  "segments": [
+    {
+      "id": "VS01",
+      "start_s": 0,
+      "end_s": 8,
+      "caption": "第二个设备尚未合并的本机草稿。",
+      "dimensions": {
+        "subject": "object",
+        "action": "changing",
+        "camera": "fixed",
+        "lighting": "studio",
+        "physical_dynamics": "uncertain",
+        "material": "glass",
+        "interaction": "contact"
+      },
+      "note": "部分运镜、物理动态与材质需要连续观看确认；不从单帧推断。",
+      "boundary_status": "pending_listen"
+    }
+  ]
+}

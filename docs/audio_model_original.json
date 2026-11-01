@@ -1,0 +1,10 @@
+{
+  "task_id": "A-001",
+  "model": "SenseVoice ONNX int8",
+  "purpose": "offline_case_preparation_only",
+  "automatic_asr_in_product": false,
+  "language": "zh",
+  "use_itn": false,
+  "text": "宁夏拥有四千多万亩草场其羊羔肉胎羊皮沙毛山羊驰名中外羊毛羊绒及皮章是宁夏的大宗出口商品",
+  "evidence": "evidence/audio_machine_crosscheck.json"
+}

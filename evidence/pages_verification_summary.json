@@ -1,0 +1,13 @@
+{
+  "version": "3.0.0-demo.1",
+  "core_and_api_tests": 18,
+  "static_workflow_groups": 11,
+  "json_video_interaction_groups": 4,
+  "review_correction_groups": 2,
+  "storage_isolation_reset_groups": 2,
+  "all_passed": true,
+  "data_boundary": "role simulation, IndexedDB per browser, no cross-device authentication or synchronization",
+  "local_server_data_uploaded": false,
+  "seed_task_count": 4,
+  "publication": "pending"
+}

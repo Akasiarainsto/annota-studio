@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "modality": "audio",
+  "task_id": "A-001",
+  "rule_version": "audio-manual-1.0",
+  "status": "reference_draft",
+  "media": {
+    "id": "D11_766",
+    "file": "audio/D11_766.wav",
+    "duration_s": 12.958,
+    "sample_rate_hz": 16000,
+    "channels": 1
+  },
+  "speakers": [
+    {
+      "id": "S1"
+    }
+  ],
+  "segments": [
+    {
+      "id": "S01",
+      "start_s": 0.8,
+      "end_s": 3.9,
+      "transcript": "宁夏拥有四千多万亩草场。",
+      "speaker_id": "S1",
+      "language": "zh-CN",
+      "scene": "read_speech",
+      "quality": "clear_provisional",
+      "boundary_status": "pending_listen",
+      "overlap": false,
+      "revision_reason": ""
+    },
+    {
+      "id": "S02",
+      "start_s": 3.9,
+      "end_s": 8.5,
+      "transcript": "其羊羔肉、滩羊皮、沙毛山羊驰名中外。",
+      "speaker_id": "S1",
+      "language": "zh-CN",
+      "scene": "read_speech",
+      "quality": "clear_provisional",
+      "boundary_status": "pending_listen",
+      "overlap": false,
+      "revision_reason": "胎→滩，公开参考稿依据，待复听确认。"
+    },
+    {
+      "id": "S03",
+      "start_s": 8.5,
+      "end_s": 12.9,
+      "transcript": "羊毛、羊绒及皮张是宁夏的大宗出口商品。",
+      "speaker_id": "S1",
+      "language": "zh-CN",
+      "scene": "read_speech",
+      "quality": "clear_provisional",
+      "boundary_status": "pending_listen",
+      "overlap": false,
+      "revision_reason": "章→张，公开参考稿依据，待复听确认。"
+    }
+  ],
+  "reference_notice": "公开参考正文；标点为编辑规则补充，边界待人工复听；不是已验收金标准。"
+}

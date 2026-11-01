@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-01T12:08:22.899Z",
+  "source": "视频 · V-001 · 错例：七维缺失（已载入）",
+  "valid": false,
+  "recordCount": 1,
+  "issues": [
+    {
+      "path": "/segments/0/dimensions",
+      "code": "E_VIDEO_DIMENSIONS",
+      "message": "请填写七维属性",
+      "record": 1,
+      "offset": 221,
+      "length": 1,
+      "line": 12,
+      "column": 5
+    }
+  ]
+}

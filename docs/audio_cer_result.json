@@ -1,0 +1,11 @@
+{
+  "reference": "宁夏拥有四千多万亩草场其羊羔肉滩羊皮沙毛山羊驰名中外羊毛羊绒及皮张是宁夏的大宗出口商品",
+  "original_model_hypothesis": "宁夏拥有四千多万亩草场其羊羔肉胎羊皮沙毛山羊驰名中外羊毛羊绒及皮章是宁夏的大宗出口商品",
+  "normalization": "保留中文汉字、拉丁字母和数字；本例仅汉字，去空白和标点；不做简繁转换",
+  "reference_characters": 43,
+  "substitutions": 2,
+  "deletions": 0,
+  "insertions": 0,
+  "cer": 0.046511627906976744,
+  "scope": "单条真实公开语音；非用户项目整体准确率"
+}

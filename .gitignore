@@ -1,12 +1,6 @@
-__pycache__/
-*.pyc
-.DS_Store
-Thumbs.db
-docs/rea_evidence.json
+.local_data/
 node_modules/
-.env
-.env.*
-!.env.example
-.neon/
-.server_build/
-test-results/
+dist/
+evidence/*.png
+evidence/*.wav
+evidence/*.webm

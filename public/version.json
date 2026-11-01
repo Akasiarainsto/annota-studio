@@ -1,0 +1,7 @@
+{
+  "version": "3.0.0-demo.1",
+  "mode": "interview",
+  "based_on": "3.0.0-local.3",
+  "storage": "browser IndexedDB",
+  "authentication": "simulated roles"
+}
