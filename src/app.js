@@ -14,11 +14,11 @@ async function startApp() {
     root.querySelector('#login-form').addEventListener('submit',async event=>{
       event.preventDefault();const button=event.target.querySelector('button[type=submit]');button.disabled=true;
       try{const fields=new FormData(event.target);const {user}=await post('/login',{username:fields.get('username'),password:fields.get('password')});await createWorkspace({root,user,onLogout:showLogin});}
-      catch(error){const errorNode=root.querySelector('#login-error');if(errorNode)errorNode.textContent=error.message;else root.innerHTML='<div class="empty-state">工作区载入失败，请刷新重试。</div>';}
+      catch(error){root.inert=false;root.setAttribute('aria-busy','false');const errorNode=root.querySelector('#login-error');if(errorNode)errorNode.textContent=error.message;else root.innerHTML='<div class="empty-state">工作区载入失败，请刷新重试。</div>';}
       finally{if(button.isConnected)button.disabled=false;}
     });
   }
   try{if(RUNTIME_MODE==='interview')await initializeDemoMedia();const {user}=await request('/session');if(user)await createWorkspace({root,user,onLogout:showLogin});else await showLogin();}
-  catch(error){root.innerHTML='<div class="empty-state"><h1>工作区暂时无法打开</h1><p></p><button onclick="location.reload()">重新打开</button></div>';root.querySelector('.empty-state p').textContent=error.message;}
+  catch(error){root.inert=false;root.setAttribute('aria-busy','false');root.innerHTML='<div class="empty-state"><h1>工作区暂时无法打开</h1><p></p><button onclick="location.reload()">重新打开</button></div>';root.querySelector('.empty-state p').textContent=error.message;}
 }
 await startApp();

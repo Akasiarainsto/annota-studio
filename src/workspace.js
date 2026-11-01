@@ -22,13 +22,13 @@ import {validateDocument} from './core/validation.js';
 export async function createWorkspace(options) {
   const {root,user,onLogout}=options;
   const state={task:null,document:null,tasks:[],editor:null,dirty:false,issues:[],page:'tasks',review:false,history:createHistory(),toastTimer:0};
-  const abort=new AbortController();root.innerHTML=renderShell(user);
+  const abort=new AbortController();root.innerHTML=renderShell(user);root.inert=true;root.setAttribute('aria-busy','true');
   const main=root.querySelector('#main'),actionbar=root.querySelector('#actionbar'),saveLabel=root.querySelector('#save-status');
   const draftKey=()=>`${RUNTIME_MODE==='interview'?'annota-interview-draft':'annota-local-v3'}:${user.id}:${state.task?.id}`;
   const toast=message=>{const element=root.querySelector('#toast');element.textContent=message;element.classList.add('visible');clearTimeout(state.toastTimer);state.toastTimer=setTimeout(()=>element.classList.remove('visible'),5000);};
-  const onError=error=>{toast(error.message||String(error));if(error.issues?.length){state.issues=error.issues;showChecks();}if(error.status===409){saveLabel.textContent='版本冲突 · 本机草稿保留';showNotice('服务端版本已更新，请先导出本机草稿，或重新载入后比较。',true);}};
+  const onError=error=>{toast(error.message||String(error));if(error.issues?.length){state.issues=error.issues;showChecks();}if(error.status===409){saveLabel.textContent='版本冲突 · 本机草稿保留';showNotice('已保存版本已更新，请先导出本机草稿，或重新载入后比较。',true);}};
   const timer=await createTimerControls({root,getTask:()=>state.page==='workbench'?state.task:null,onError});
-  function showNotice(message,conflict=false){const host=root.querySelector('#task-notice');if(host)host.innerHTML=`<div class="notice">${escapeHtml(message)}${conflict?'<button id="download-local-draft">导出本机草稿</button><button id="reload-server-task">载入服务端版本</button>':''}</div>`;}
+  function showNotice(message,conflict=false){const host=root.querySelector('#task-notice');if(host)host.innerHTML=`<div class="notice">${escapeHtml(message)}${conflict?'<button id="download-local-draft">导出本机草稿</button><button id="reload-server-task">载入已保存版本</button>':''}</div>`;}
   function showChecks(){const panel=root.querySelector('#checks-panel');if(panel)panel.innerHTML=renderChecks(state.issues);}
   function refreshHistoryControls(){root.querySelectorAll('[data-history]').forEach(button=>{button.disabled=!state.task?.canEdit||!(button.dataset.history==='undo'?state.history.canUndo:state.history.canRedo);});}
   function setDocument(next,record=true){if(!state.task?.canEdit)return;if(record)state.history.push(state.document);state.document=next;state.dirty=true;saveLabel.textContent='未保存 · 本机草稿已保留';localStorage.setItem(draftKey(),JSON.stringify({version:state.task.version,document:next}));state.issues=validateDocument(next,{media:state.task.media});showChecks();refreshHistoryControls();}
@@ -39,7 +39,7 @@ export async function createWorkspace(options) {
   function setNav(page){root.querySelectorAll('[data-nav]').forEach(button=>button.classList.toggle('active',button.dataset.nav===page));}
   async function openTask(id,review=state.review){
     await save();await clearPage();state.task=await request('/tasks/'+id);state.document=structuredClone(state.task.draft);state.dirty=false;state.history=createHistory();state.page='workbench';state.review=review;
-    const host=newHost();host.innerHTML=renderWorkbench(state.task,review);actionbar.innerHTML=renderActionbar(state.task);setNav(review?'quality':'tasks');saveLabel.textContent=runtimeText('已载入服务端版本','已载入浏览器演示记录');
+    const host=newHost();host.innerHTML=renderWorkbench(state.task,review);actionbar.innerHTML=renderActionbar(state.task);setNav(review?'quality':'tasks');saveLabel.textContent=runtimeText('已载入已保存版本','已载入浏览器演示记录');
     const mount={audio:mountAudioEditor,video:mountVideoEditor,image:mountImageEditor}[state.task.modality];
     state.editor=await mount({root:host.querySelector('#editor-host'),task:state.task,getDocument:()=>state.document,onChange:setDocument,readonly:!state.task.canEdit,onError,toast});
     state.issues=validateDocument(state.document,{media:state.task.media});showChecks();refreshHistoryControls();
@@ -92,7 +92,7 @@ export async function createWorkspace(options) {
   }
   function restoreDraft(){
     const local=JSON.parse(localStorage.getItem(draftKey()));
-    const dialog=showDialog(root,'比较本机草稿与服务端版本',`<p>服务端 v${state.task.version} / 本机草稿基于 v${local.version}。采用本机草稿会替换当前编辑内容，随后仍须保存与确认。</p><label>当前服务端内容<textarea rows="6" readonly>${escapeHtml(JSON.stringify(state.document,null,2))}</textarea></label><label>本机草稿<textarea rows="6" readonly>${escapeHtml(JSON.stringify(local.document,null,2))}</textarea></label>`,'<button id="use-server-draft">保留服务端版本</button><button id="use-local-draft" class="primary">采用本机草稿继续编辑</button>');
+    const dialog=showDialog(root,'比较本机草稿与已保存版本',`<p>已保存 v${state.task.version} / 本机草稿基于 v${local.version}。采用本机草稿会替换当前编辑内容，随后仍须保存与确认。</p><label>当前已保存内容<textarea rows="6" readonly>${escapeHtml(JSON.stringify(state.document,null,2))}</textarea></label><label>本机草稿<textarea rows="6" readonly>${escapeHtml(JSON.stringify(local.document,null,2))}</textarea></label>`,'<button id="use-server-draft">保留已保存版本</button><button id="use-local-draft" class="primary">采用本机草稿继续编辑</button>');
     dialog.querySelector('#use-server-draft').onclick=()=>{localStorage.removeItem(draftKey());dialog.close();root.querySelector('#task-notice').innerHTML='';};
     dialog.querySelector('#use-local-draft').onclick=()=>{setDocument(local.document);state.editor.refresh();dialog.close();root.querySelector('#task-notice').innerHTML='';};
   }
@@ -105,7 +105,7 @@ export async function createWorkspace(options) {
       if(button.dataset.history&&state.task?.canEdit){const next=state.history[button.dataset.history](state.document);if(next){setDocument(next,false);state.editor.refresh();}}
       const id=button.id;
       if(id==='back-to-tasks')await navigate(state.review?'quality':'tasks');
-      if(id==='save-task'){await save();toast('草稿已保存至本机服务');}
+      if(id==='save-task'){await save();toast(runtimeText('草稿已保存至本机服务','草稿已保存到当前浏览器'));}
       if(id==='submit-task')await submit();
       if(id==='export-task'||id==='download-local-draft')downloadFile(state.task.id+'.json',JSON.stringify(state.document,null,2));
       if(id==='task-history')openHistory(root,state.task);if(id==='task-reference')openReference(root,state.task);
@@ -137,5 +137,6 @@ export async function createWorkspace(options) {
   await updateTasks();const query=new URLSearchParams(location.search);
   const requested=query.get('view');const allowed=['tasks','quality','json','evaluation','guide',...(user.role==='manager'?['project']:[])];
   if(query.get('task')&&state.tasks.some(task=>task.id===query.get('task')))await openTask(query.get('task'),query.get('mode')==='quality');else await navigate(allowed.includes(requested)?requested:user.role==='reviewer'?'quality':'tasks');
+  root.inert=false;root.setAttribute('aria-busy','false');
   return {destroy:async()=>{abort.abort();clearTimeout(state.toastTimer);await timer.destroy();if(state.editor)await state.editor.destroy();}};
 }
